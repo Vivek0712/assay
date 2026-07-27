@@ -274,8 +274,19 @@ render();
 """
 
 
-def build_page(*, run: str = "latest", output: str | None = None) -> Path:
-    scores = load_scores(run)
+def build_page(
+    *,
+    run: str = "latest",
+    output: str | None = None,
+    scores: list[dict[str, Any]] | None = None,
+) -> Path:
+    """Render the leaderboard.
+
+    `scores` is normally supplied by the publish step, which fetches them
+    through our own MCP server so the site is a client of the same surface
+    third-party assistants use. Falls back to the local run when omitted.
+    """
+    scores = scores if scores is not None else load_scores(run)
     if not scores:
         raise SystemExit(f"no scores found for run {run!r}")
     path = Path(output) if output else WEB_DIR / "index.html"
@@ -336,8 +347,9 @@ def build_feed(
     output: str | None = None,
     min_rqs: float = 70.0,
     topics: list[str] | None = None,
+    scores: list[dict[str, Any]] | None = None,
 ) -> Path:
-    scores = load_scores(run)
+    scores = scores if scores is not None else load_scores(run)
     if not scores:
         raise SystemExit(f"no scores found for run {run!r}")
     prefs = Preferences(min_rqs=min_rqs, topics=topics or [], limit=100)
@@ -347,9 +359,14 @@ def build_feed(
     return path
 
 
-def build_api_json(*, run: str = "latest", output: str | None = None) -> Path:
-    """Static JSON the browser extension and MCP server read."""
-    scores = load_scores(run)
+def build_api_json(
+    *,
+    run: str = "latest",
+    output: str | None = None,
+    scores: list[dict[str, Any]] | None = None,
+) -> Path:
+    """Static JSON the browser extension reads."""
+    scores = scores if scores is not None else load_scores(run)
     by_id = {s["article_id"]: _public(s) for s in scores}
     path = Path(output) if output else WEB_DIR / "scores.json"
     path.parent.mkdir(parents=True, exist_ok=True)

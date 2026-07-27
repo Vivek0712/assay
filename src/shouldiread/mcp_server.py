@@ -346,6 +346,49 @@ def get_preferences() -> dict[str, Any]:
 
 
 @mcp.tool()
+def export_corpus(
+    min_rqs: float = 0.0, topics: list[str] | None = None, limit: int = 2000
+) -> dict[str, Any]:
+    """Every scored article as a full record, for building your own view.
+
+    Unlike `get_reading_queue`, which returns the compact form a model needs to
+    make a recommendation, this returns the complete scored record including
+    dimension breakdowns and the measured signals behind them.
+
+    The attribution policy is applied before anything leaves: articles scoring
+    READ or SKIM are named and linked, articles scoring SKIP carry their score
+    and reasons but never their author or title.
+
+    Args:
+        min_rqs: minimum Read-Quality Score to include. 0 returns everything.
+        topics: tag allowlist. Omit for all topics.
+        limit: maximum records to return.
+    """
+    from .publish import _public, _stats
+
+    scores = _scores()
+    if not scores:
+        return {"error": "no scored corpus available yet", "scores": []}
+
+    wanted = {t.lower() for t in (topics or [])}
+    kept = [
+        s
+        for s in scores
+        if s.get("rqs", 0) >= min_rqs
+        and (not wanted or wanted & {t.lower() for t in (s.get("tags") or [])})
+    ]
+    kept.sort(key=lambda s: s.get("rqs", 0), reverse=True)
+    kept = kept[:limit]
+
+    return {
+        "scores": [_public(s) for s in kept],
+        "returned": len(kept),
+        "corpus_size": len(scores),
+        "stats": _stats(kept),
+    }
+
+
+@mcp.tool()
 def corpus_stats() -> dict[str, Any]:
     """Aggregate statistics for the scored corpus.
 

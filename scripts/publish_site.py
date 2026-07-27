@@ -19,6 +19,7 @@ import boto3
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from shouldiread.corpus import load_scores  # noqa: E402
+from shouldiread.mcp_client import load_corpus_via_mcp  # noqa: E402
 from shouldiread.publish import build_api_json, build_feed, build_page  # noqa: E402
 from shouldiread.review_page import build_review_page  # noqa: E402
 
@@ -51,6 +52,14 @@ def main() -> int:
         action="store_true",
         help="delete rows not present in this run, so the table matches the window",
     )
+    ap.add_argument(
+        "--via",
+        choices=("mcp", "agentcore", "direct"),
+        default="mcp",
+        help="where the published pages get their scores: through our own MCP "
+        "server over stdio (default), through the deployed AgentCore MCP "
+        "runtime, or straight from the local run",
+    )
     args = ap.parse_args()
 
     session = boto3.Session(profile_name=PROFILE, region_name=REGION)
@@ -65,31 +74,6 @@ def main() -> int:
         print(f"no scores for run {args.run!r}", file=sys.stderr)
         return 1
     print(f"scores        : {len(scores)}")
-
-    # --- build artefacts -------------------------------------------------
-    files = [
-        build_page(run=args.run),
-        build_api_json(run=args.run),
-        build_feed(run=args.run, min_rqs=70.0),
-        build_review_page(api_base=out["SiteUrl"]),
-    ]
-    # Brand assets are static; ship them alongside so the pages resolve the logo.
-    files += [p for p in (Path("web/assay-logo.svg"), Path("web/assay-mark.svg"), Path("web/assay-banner.svg")) if p.exists()]
-
-    s3 = session.client("s3")
-    for path in files:
-        ext = path.suffix
-        s3.upload_file(
-            str(path),
-            bucket,
-            path.name,
-            ExtraArgs={
-                "ContentType": mimetypes.guess_type(path.name)[0]
-                or "application/octet-stream",
-                "CacheControl": CACHE_CONTROL.get(ext, "public, max-age=300"),
-            },
-        )
-        print(f"  uploaded {path.name} ({path.stat().st_size:,} bytes)")
 
     # --- seed DynamoDB ---------------------------------------------------
     if not args.skip_dynamo:
@@ -124,6 +108,50 @@ def main() -> int:
                 )
                 batch.put_item(Item=store._floats_to_decimals(item))
         print(f"  wrote {len(scores)} items to {out['ScoresTableName']}")
+
+    # --- read the corpus back through our own MCP server -----------------
+    # The site is a client of the same surface assistants connect to. If the
+    # MCP tools ever drift from what the pages show, this breaks loudly rather
+    # than the two quietly disagreeing.
+    published = None
+    if args.via != "direct":
+        published = load_corpus_via_mcp(
+            transport="agentcore" if args.via == "agentcore" else "stdio",
+            run=args.run,
+            scores_table=out["ScoresTableName"],
+            prefs_table=out.get("PreferencesTableName"),
+        )
+        print(f"via MCP       : {len(published)} scores ({args.via})")
+        if len(published) != len(scores):
+            print(
+                f"  note: MCP returned {len(published)}, local run has {len(scores)} "
+                "- the table also holds anything the hourly ingest has added"
+            )
+
+    # --- build artefacts -------------------------------------------------
+    files = [
+        build_page(run=args.run, scores=published),
+        build_api_json(run=args.run, scores=published),
+        build_feed(run=args.run, min_rqs=70.0, scores=published),
+        build_review_page(api_base=out["SiteUrl"]),
+    ]
+    # Brand assets are static; ship them alongside so the pages resolve the logo.
+    files += [p for p in (Path("web/assay-logo.svg"), Path("web/assay-mark.svg"), Path("web/assay-banner.svg")) if p.exists()]
+
+    s3 = session.client("s3")
+    for path in files:
+        ext = path.suffix
+        s3.upload_file(
+            str(path),
+            bucket,
+            path.name,
+            ExtraArgs={
+                "ContentType": mimetypes.guess_type(path.name)[0]
+                or "application/octet-stream",
+                "CacheControl": CACHE_CONTROL.get(ext, "public, max-age=300"),
+            },
+        )
+        print(f"  uploaded {path.name} ({path.stat().st_size:,} bytes)")
 
     # --- invalidate ------------------------------------------------------
     session.client("cloudfront").create_invalidation(

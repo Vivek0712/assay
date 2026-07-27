@@ -118,6 +118,24 @@ Score 0 when there is no code AND the article is the kind that needs it - a
 tutorial or a how-to. Do not penalise an opinion piece or a news summary for
 lacking code; judge those on whether code was warranted at all, and if it was
 not, score this dimension around 50 as not-applicable rather than 0.
+
+SCORE BANDS. Decide the band from the measured counts first, then pick a value
+inside it. The same article has to score the same way twice.
+
+  85-100  Complete runnable files, all blocks parse, low placeholder density,
+          and every AWS API real. A reader could copy this and get somewhere.
+  70-84   Substantial code that parses, mostly complete, a few gaps a competent
+          reader would fill in.
+  50-69   Real snippets, but fragmentary, placeholder-heavy, or missing the
+          imports and context needed to run them.
+  30-49   Token snippets that illustrate rather than implement.
+  10-29   A single trivial block, or code that mostly fails to parse.
+   0-9    No code at all in a piece that needed it.
+
+The signals give you block count, lines of code, parse pass rate, complete-file
+count and placeholder density. Those decide the band. If the signals report
+several complete files that all parse with low placeholder density, you cannot
+score below 70 on the grounds that you would have written it differently.
 """
 
 
@@ -137,6 +155,21 @@ Weigh:
 An article with zero outbound links has cited nothing. That is a real deficiency
 in a technical piece, though a first-person experience report needs fewer
 citations than a reference article - weigh by content type.
+
+SCORE BANDS. The signals give you link count, how many are primary sources and
+how many are dead. Those decide the band.
+
+  85-100  Several primary sources, all resolving, and the non-obvious claims
+          each point at something checkable.
+  70-84   Primary sources present and the main claims anchored; a few
+          assertions left to stand on their own.
+  50-69   Links present but mostly secondary - other blog posts, not the docs.
+  30-49   One or two links, with the substantive claims unsupported.
+  10-29   A link or two that establish nothing.
+   0-9    No outbound sources at all.
+
+If the signals report three or more primary sources and no dead links, you
+cannot score below 70 for wanting a citation on one more sentence.
 """
 
 
@@ -163,6 +196,26 @@ rapidly the cloud landscape is evolving.
 
 Cross-posting is not plagiarism - it is fine and the signals will say so. What
 matters is whether the material is genuinely theirs.
+
+SCORE BANDS for DEPTH. Pick the band, then the value.
+
+  85-100  Documents a gotcha, failure mode or tradeoff that is not in the
+          documentation, with the reasoning or the numbers behind it.
+  70-84   Real insight beyond the docs - a decision explained, a constraint
+          made concrete.
+  50-69   Competent, but largely restates what the service documentation says.
+  30-49   An overview: what the service is and what it does.
+  10-29   A surface listing of features or steps.
+   0-9    Nothing a reader could not get from the product page.
+
+SCORE BANDS for ORIGINALITY.
+
+  85-100  Unmistakably this author's own problem, constraints and decisions.
+  70-84   Their own work, conventionally framed.
+  50-69   Generic structure, but some specific material of their own.
+  30-49   Would read the same with the service name swapped.
+  10-29   Template-shaped throughout.
+   0-9    Near-duplicate of other material.
 """
 
 

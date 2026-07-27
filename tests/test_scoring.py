@@ -6,6 +6,7 @@ which is where a silent regression would be hardest to notice.
 
 from __future__ import annotations
 
+import json
 import re
 
 import pytest
@@ -502,3 +503,78 @@ def test_articles_that_never_reached_a_judge_still_get_advice():
     # No dimension scores exist, so no gain may be invented.
     assert all(r["certainty"] == "structural" and r["gain"] == 0.0
                for r in out["recommendations"])
+
+
+# ------------------------------------------------- MCP-backed publishing ----
+def test_export_corpus_applies_the_attribution_policy():
+    """The published site is built from this tool's output, so redaction has to
+    happen server-side - not in the page renderer that consumes it."""
+    import shouldiread.mcp_server as srv
+
+    rows = [
+        score_row(article_id="1", verdict="READ", title="Good Post", author_alias="alice"),
+        score_row(article_id="2", verdict="SKIP", rqs=15.0, title="SECRETTITLE",
+                  author_alias="SECRETAUTHOR"),
+    ]
+    original = srv._scores
+    srv._scores = lambda: rows
+    try:
+        out = srv.export_corpus(min_rqs=0, limit=10)
+    finally:
+        srv._scores = original
+
+    assert out["returned"] == 2
+    dumped = json.dumps(out)
+    assert "SECRETTITLE" not in dumped
+    assert "SECRETAUTHOR" not in dumped
+    assert "Good Post" in dumped
+
+
+def test_export_corpus_returns_full_records_not_the_compact_form():
+    """get_reading_queue returns a brief; the leaderboard needs dimensions and
+    signals, so export_corpus must not be the same shape."""
+    import shouldiread.mcp_server as srv
+
+    row = score_row(article_id="1", verdict="READ")
+    row["dimensions"] = [{"name": "depth", "score": 80.0, "rationale": "r", "evidence": []}]
+    row["signals"] = {"structure": {"code_blocks": 3, "links": 2}, "author_bonus": 3.0}
+
+    original = srv._scores
+    srv._scores = lambda: [row]
+    try:
+        out = srv.export_corpus(min_rqs=0)
+    finally:
+        srv._scores = original
+
+    exported = out["scores"][0]
+    assert exported["dimensions"], "dimensions must survive the export"
+    assert exported["signals"], "measured signals must survive the export"
+    assert "stats" in out
+
+
+def test_build_page_accepts_scores_from_mcp():
+    """build_page must render from injected records so the publish step can feed
+    it MCP output instead of reading the store directly."""
+    from shouldiread.publish import build_page
+
+    rows = [
+        score_row(article_id="1", verdict="READ", title="From MCP", author_alias="alice"),
+        score_row(article_id="2", verdict="SKIP", rqs=12.0, title="LEAKME",
+                  author_alias="LEAKAUTHOR"),
+    ]
+    out = tmp_path_page(rows)
+    assert "From MCP" in out
+    assert "LEAKME" not in out
+    assert "LEAKAUTHOR" not in out
+
+
+def tmp_path_page(rows):
+    import tempfile
+    from pathlib import Path
+
+    from shouldiread.publish import build_page
+
+    with tempfile.TemporaryDirectory() as d:
+        target = Path(d) / "index.html"
+        build_page(output=str(target), scores=rows)
+        return target.read_text()

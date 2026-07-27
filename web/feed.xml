@@ -3,7 +3,7 @@
   <id>urn:shouldiread:feed</id>
   <title>ShouldIRead - AWS Builder Center, worth-reading only</title>
   <subtitle>RQS &gt;= 70, all topics. Scored on execution evidence, not engagement.</subtitle>
-  <updated>2026-07-27T16:25:45.191021+00:00</updated>
+  <updated>2026-07-27T17:03:58.256663+00:00</updated>
   <link rel="alternate" href="https://builder.aws.com"/>
   <generator>shouldiread</generator>
   <entry>
@@ -113,15 +113,6 @@
     <author><name>kirschzao</name></author>
     <category term="load-balancing"/><category term="nginx"/><category term="application-load-balancer"/><category term="amazon-ecs"/><category term="aws-fargate"/>
     <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 71/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Detailed cost and performance benchmarks between Nginx and AWS Load Balancer.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 45/100&lt;/li&gt;&lt;li&gt;code substance: 80/100&lt;/li&gt;&lt;li&gt;source integrity: 85/100&lt;/li&gt;&lt;li&gt;depth: 80/100&lt;/li&gt;&lt;li&gt;originality: 85/100&lt;/li&gt;&lt;/ul&gt;</summary>
-  </entry>
-  <entry>
-    <id>https://builder.aws.com/content/3Gm5DiclnHn06mDV8gyi3IdfriN/weekend-agent-challenge-dev-community-pulse-agent</id>
-    <title type="html">Weekend Agent Challenge: Dev Community Pulse Agent</title>
-    <link rel="alternate" href="https://builder.aws.com/content/3Gm5DiclnHn06mDV8gyi3IdfriN/weekend-agent-challenge-dev-community-pulse-agent"/>
-    <updated>2026-07-20T16:56:17.180000+00:00</updated>
-    <author><name>mdmostafa</name></author>
-    <category term="agents"/><category term="ai"/><category term="amazon-bedrock"/><category term="serverless"/><category term="aws-community"/>
-    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 71/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Substantial 164-line code tutorial on building an AWS agent, lacking execution evidence.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 45/100&lt;/li&gt;&lt;li&gt;code substance: 90/100&lt;/li&gt;&lt;li&gt;source integrity: 90/100&lt;/li&gt;&lt;li&gt;depth: 60/100&lt;/li&gt;&lt;li&gt;originality: 50/100&lt;/li&gt;&lt;/ul&gt;</summary>
   </entry>
   <entry>
     <id>https://builder.aws.com/content/3GXOyuLMZR7WLCptN5kxOEt0KpE/meet-cloudagotchi-building-a-virtual-pet-with-a-cloud-brain-part</id>

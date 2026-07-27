@@ -182,6 +182,19 @@ as a finding nobody can act on.
 Every surface applies the same `Preferences` filter, so the feed and the browser extension
 can never disagree.
 
+**The published site is built through Assay's own MCP server.** `publish_site.py` seeds
+DynamoDB, then reads the corpus back out via the `export_corpus` MCP tool and renders the
+leaderboard, feed and extension index from that — over stdio by default, or against the
+deployed AgentCore runtime with `--via agentcore`. It is not decoration: if the MCP tools
+ever drift from what the pages show (a different filter, a lapsed attribution rule) the
+publish step breaks loudly instead of the two quietly disagreeing. Use `--via direct` to
+bypass it.
+
+```bash
+python scripts/publish_site.py --run week --replace                  # via local MCP
+python scripts/publish_site.py --run week --via agentcore            # via hosted MCP
+```
+
 - **Leaderboard** — static page on CloudFront + S3, filterable by verdict and topic
 - **Atom feed** — `/feed.xml`, filtered by topic, minimum RQS, author kind and age
 - **MCP server** — `get_reading_queue`, `score_url`, `explain_score`, `search_scored`,
