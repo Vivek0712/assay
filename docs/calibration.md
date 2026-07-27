@@ -10,23 +10,23 @@
 | expected \ predicted | READ | SKIM | SKIP |
 |---|---|---|---|
 | **READ** | 2 | 0 | 0 |
-| **SKIM** | 0 | 5 | 0 |
-| **SKIP** | 0 | 1 | 15 |
+| **SKIM** | 0 | 4 | 1 |
+| **SKIP** | 0 | 0 | 16 |
 
 ### Disagreements
 
-- `SKIP` -> `SKIM` (44) **From Root Cause Analysis to AWS-Aligned Solutions with Kiro** - Case study framing with a single five-line snippet and nothing reproducible.
+- `SKIM` -> `SKIP` (38) **Dashboards Aren't Going Away, but They Will Take a Back Seat** - Opinion piece, heavily cited (21 primary sources), but the argument is product positioning rather than anything you could act on.
 
 ## Coherence with measured signals
 
-- articles checked: **307**
+- articles checked: **302**
 - cap violations: **0**
 
 | cohort | n | median RQS | mean RQS | |
 |---|---|---|---|---|
-| shows real terminal output | 4 | 62.9 | 59.3 | underpowered (n < 20) |
-| no terminal output | 303 | 35.0 | 39.9 |  |
-| contains code | 157 | 49.2 | 48.8 |  |
-| contains no code | 150 | 33.8 | 31.1 |  |
+| shows real terminal output | 4 | 72.0 | 70.7 | underpowered (n < 20) |
+| no terminal output | 298 | 35.0 | 40.0 |  |
+| contains code | 154 | 50.1 | 49.9 |  |
+| contains no code | 148 | 33.2 | 30.6 |  |
 
 > Underpowered cohorts are shown for completeness. Do not quote them as separations - there are not enough articles behind the number.
