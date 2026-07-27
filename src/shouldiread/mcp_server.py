@@ -232,7 +232,12 @@ async def review_article(
 
     score = await ScoringFleet().score(article, check_links=check_links)
     advice = recommend(score.to_dict())
-    return {"title": article.title, "url": article.url if not looks_like_a_draft else "", **advice}
+    return {
+        "title": article.title,
+        "url": article.url if not looks_like_a_draft else "",
+        "published_at": article.published_at,
+        **advice,
+    }
 
 
 @mcp.tool()

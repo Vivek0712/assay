@@ -41,6 +41,9 @@ button:disabled { opacity:.55; cursor:progress; }
 .title { font-weight:600; margin:2px 0 0; }
 .headline { color:var(--muted); margin:8px 0 0; }
 .pub { color:var(--muted); font-size:12.5px; margin:3px 0 0; }
+.pub a, .title a { color:inherit; }
+.title a { text-decoration:none; }
+.title a:hover { text-decoration:underline; }
 .next { margin:16px 0 0; padding:12px 14px; border-radius:9px; border:1px solid var(--line);
   font-size:14px; }
 .strengths { margin:18px 0 0; font-size:14px; }
@@ -173,9 +176,12 @@ function render(d) {
       <span class="score">${Math.round(d.rqs)}</span>
       <span class="badge">${esc(d.verdict)}</span>
     </div>
-    <p class="title">${esc(d.title || '')}</p>
-    ${d.published_at ? `<p class="pub">published ${new Date(d.published_at)
-        .toLocaleDateString(undefined, {day:'numeric', month:'short', year:'numeric'})}</p>` : ''}
+    <p class="title">${d.url
+        ? `<a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(d.title || '')}</a>`
+        : esc(d.title || '')}</p>
+    <p class="pub">${d.published_at ? `published ${new Date(d.published_at)
+        .toLocaleDateString(undefined, {day:'numeric', month:'short', year:'numeric'})}` : ''}${
+      d.url ? ` &middot; <a href="${esc(d.url)}" target="_blank" rel="noopener">open on Builder Center &rarr;</a>` : ''}</p>
     <p class="headline">${esc(d.headline || '')}</p>
     ${next}${strengths}${recs}
   </div>`;

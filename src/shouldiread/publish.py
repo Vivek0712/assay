@@ -292,7 +292,9 @@ function render() {{
   list.innerHTML = rows.map(s => {{
     const title = s.redacted
       ? `<span class="redacted">[author and title withheld]</span>`
-      : (s.url ? `<a href="${{esc(s.url)}}" rel="noopener">${{esc(s.title)}}</a>` : esc(s.title));
+      : (s.url
+          ? `<a href="${{esc(s.url)}}" target="_blank" rel="noopener">${{esc(s.title)}}</a>`
+          : esc(s.title));
     const who = s.redacted ? '' : `<span>@${{esc(s.author_alias)}}</span>`;
     const tags = (s.tags||[]).slice(0,5).map(t => `<span class="tag">${{esc(t)}}</span>`).join('');
     const dims = breakdown(s);

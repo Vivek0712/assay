@@ -85,8 +85,14 @@ def _review(event: dict[str, Any], query: dict[str, str]) -> dict[str, Any]:
     existing = get_score(article_id)
     if existing and not query.get("fresh"):
         advice = recommend(existing)
-        return _respond(200, {"title": existing.get("title"), "url": existing.get("url"),
-                              "cached": True, **advice})
+        return _respond(200, {
+            "title": existing.get("title"),
+            "url": existing.get("url"),
+            "published_at": existing.get("published_at"),
+            "author_alias": existing.get("author_alias"),
+            "cached": True,
+            **advice,
+        })
 
     async def run() -> dict[str, Any]:
         async with httpx.AsyncClient(follow_redirects=True) as client:
@@ -94,8 +100,14 @@ def _review(event: dict[str, Any], query: dict[str, str]) -> dict[str, Any]:
         if article is None:
             return {"error": f"could not retrieve {article_id}"}
         score = await ScoringFleet().score(article, check_links=False)
-        return {"title": article.title, "url": article.url, "cached": False,
-                **recommend(score.to_dict())}
+        return {
+            "title": article.title,
+            "url": article.url,
+            "published_at": article.published_at,
+            "author_alias": article.author.alias,
+            "cached": False,
+            **recommend(score.to_dict()),
+        }
 
     result = asyncio.run(run())
     status = 404 if "error" in result else 200
