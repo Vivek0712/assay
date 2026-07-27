@@ -1,0 +1,71 @@
+/* Injected styles. Scoped under .sir-* so nothing on the host page is touched. */
+
+.sir-badge {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  margin-left: 8px;
+  padding: 1px 7px 2px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font: 600 11px/1.45 ui-sans-serif, -apple-system, "Segoe UI", system-ui, sans-serif;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.sir-badge b {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.sir-badge i {
+  font-style: normal;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  opacity: 0.85;
+}
+
+.sir-READ { color: #1a7f5a; background: rgba(26, 127, 90, 0.09); }
+.sir-SKIM { color: #8a6000; background: rgba(154, 107, 0, 0.09); }
+.sir-SKIP { color: #a33b30; background: rgba(163, 59, 48, 0.09); }
+
+.sir-hidden { display: none !important; }
+
+.sir-banner {
+  margin: 14px 0 20px;
+  padding: 13px 16px;
+  border-radius: 10px;
+  border: 1px solid currentColor;
+  background: rgba(127, 127, 127, 0.05);
+}
+
+.sir-badge.sir-large {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  border-radius: 0;
+}
+
+.sir-badge.sir-large b { font-size: 26px; letter-spacing: -0.02em; }
+.sir-badge.sir-large i { font-size: 11px; }
+
+.sir-badge.sir-large em {
+  flex-basis: 100%;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: inherit;
+  opacity: 0.92;
+}
+
+@media (prefers-color-scheme: dark) {
+  .sir-READ { color: #5fd1a4; background: rgba(95, 209, 164, 0.1); }
+  .sir-SKIM { color: #e3b34d; background: rgba(227, 179, 77, 0.1); }
+  .sir-SKIP { color: #f2887a; background: rgba(242, 136, 122, 0.1); }
+}

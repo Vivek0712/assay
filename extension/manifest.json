@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "ShouldIRead - Builder Center triage",
+  "version": "0.1.0",
+  "description": "Overlays a Read-Quality Score on AWS Builder Center, based on evidence the author actually ran what they wrote about.",
+  "permissions": ["storage"],
+  "host_permissions": [
+    "https://builder.aws.com/*",
+    "https://d1m5fcrjmmi9ue.cloudfront.net/*"
+  ],
+  "optional_host_permissions": ["https://*/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "ShouldIRead"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://builder.aws.com/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}

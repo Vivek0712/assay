@@ -1,0 +1,166 @@
+# Hand-labelled golden set.
+#
+# Labelled by inspecting each article's actual content and measured signals, not
+# by looking at what the fleet produced. The question asked of each one was the
+# only question this system exists to answer: would a working AWS engineer get
+# anything out of opening this?
+#
+#   READ  worth the click - shows work that was actually done, or teaches
+#         something the documentation does not
+#   SKIM  has a real point but it is thin, abstract, or reachable from the
+#         first paragraph
+#   SKIP  nothing here for a practitioner - restates docs, describes a project
+#         without showing it, or is a personal announcement
+#
+# Author names are omitted deliberately; these are labels about artefacts.
+
+labels:
+  - article_id: 3FtOI9H152rOXVRvdRXJdztqC3G
+    title: "Best Practices for Extending Striped LVM Storage in SAP HANA on AWS"
+    verdict: READ
+    note: >-
+      Nine pasted root-prompt transcripts from a real EC2 instance, with actual
+      pvs/vgs/lvs output and a genuine striped-volume gotcha. The strongest
+      execution evidence in the sample.
+
+  - article_id: 3GwwVXZ0VS7mdvCn06mruysli4W
+    title: "Don't Break Agents During Bedrock Model Upgrades"
+    verdict: READ
+    note: >-
+      161 lines of code that all parse, a companion repo, 14 primary sources and
+      a real problem (regression-testing agents across model upgrades). No
+      terminal output, which is the one thing keeping it off a top score.
+
+  - article_id: 3H0RBOsX9gzQhwuQ8OhIlPYXYd2
+    title: "Bedrock Tool Use in Python: A Working Guide"
+    verdict: SKIM
+    note: >-
+      Two correct, complete Python blocks on Bedrock tool use. Useful but short,
+      and it does not go past what the API reference already shows.
+
+  - article_id: 3Gvb2fABddtzjB42hzARFXywNSe
+    title: "I Tried Redis. It Didn't Fix Stateful MCP on ECS Fargate"
+    verdict: SKIM
+    note: >-
+      A genuine negative result, which is worth something. Undercut by fragments
+      that mostly do not parse and no output showing the failure.
+
+  - article_id: 3H36W4oTMvoVZT9EAJapEHC0Etn
+    title: "Replacing Glue Lambdas with EventBridge Pipes"
+    verdict: SKIM
+    note: >-
+      Sound architectural point, made in 645 words with no code and no sources.
+      The idea is the whole article and you get it from the title.
+
+  - article_id: 3GHL0BzJHMJCKP5kIR2KSopuR16
+    title: "SQS, SNS y API Gateway"
+    verdict: SKIM
+    note: >-
+      Competent service overview with six primary sources. Reference material
+      that restates the docs; fine as an intro, nothing new for a practitioner.
+
+  - article_id: 3H1Sv8Z0YvihT30mF4KGBLKrHds
+    title: "Dashboards Aren't Going Away, but They Will Take a Back Seat"
+    verdict: SKIM
+    note: >-
+      Opinion piece, heavily cited (21 primary sources), but the argument is
+      product positioning rather than anything you could act on.
+
+  - article_id: 3H1eZHHE7BsoQjvEn9x79gc8Qy9
+    title: "Assistant - AI Agent for the Weekend Builder Challenge"
+    verdict: SKIP
+    note: >-
+      Describes building an agent without showing any of it. No code, no
+      sources, no output.
+
+  - article_id: 3H3S31EAt1K4c60ChlEjtd0oLF2
+    title: "My AWS Cloud Learning Journey"
+    verdict: SKIP
+    note: Certification-journey post. Nothing technical to take away.
+
+  - article_id: 3GygFPdq7FdSz7hnP8akiiZNLd9
+    title: "AWS Certification Tip #5"
+    verdict: SKIP
+    note: >-
+      505 words of study advice, nine bold-text pseudo-headings, no technical
+      content.
+
+  - article_id: 3H2FS7ePIKSxfeErYBHW0DqxOFN
+    title: "Stop Asking AI to Fix the Bug"
+    verdict: SKIP
+    note: >-
+      Explains a workflow entirely in the abstract. No code, no sources, no
+      example of the workflow actually being used.
+
+  - article_id: 3H2BSZpzU6QylgzGzfpMspYnqiL
+    title: "My 21-Day AWS Builder Challenge Journey"
+    verdict: SKIP
+    note: Personal challenge recap. No technical content.
+
+  - article_id: 3H0xIokYWXysOnsLtcaFP8aWgxP
+    title: "How TactiScout Used AWS to Build Autonomous Multi-Agent Scouting"
+    verdict: SKIP
+    note: >-
+      Lists the AWS services a hackathon project used. Names services without
+      showing a single decision, configuration or result.
+
+  - article_id: 3GztNgzOLC8SHQOBlyKiSPUbqga
+    title: "Kiro Powers Explained"
+    verdict: SKIP
+    note: >-
+      1,830 words explaining a feature with no code, no sources and no example.
+      Reads as a paraphrase of the announcement.
+
+  - article_id: 3Gf8KUX98gk77g2cTgvjfqYE86W
+    title: 'From "What Is AWS?" to AWS Certified Developer'
+    verdict: SKIP
+    note: Certification reflection. No technical content.
+
+  - article_id: 3GmKFeNRCfYBZKLo6joIc3CJA3A
+    title: "Del pueblo a la nube"
+    verdict: SKIP
+    note: >-
+      Community/personal essay. Perfectly good as a piece of writing; simply not
+      something a working engineer is looking for.
+
+  - article_id: 3GrWzsah8W2LKTcFUPISVHIU7tg
+    title: "From Root Cause Analysis to AWS-Aligned Solutions with Kiro"
+    verdict: SKIP
+    note: >-
+      Case study framing with a single five-line snippet and nothing reproducible.
+
+  - article_id: 3H2JF6IMYuiS5mnpCQaKteNdvpv
+    title: "The Day I Stopped Memorizing Technology"
+    verdict: SKIP
+    note: Personal reflection, no technical content.
+
+  - article_id: 3GzfCkUeaRr0nIWagj1vt7lZDis
+    title: "AWS Community Day Manila"
+    verdict: SKIP
+    note: >-
+      3,357 words of event recap. Long, and length is not depth - exactly the
+      case the scorer must not be fooled by.
+
+  - article_id: 3H2iEBmafUfvbhUqulRXYPHPxIW
+    title: "How AWS Serverless and Amazon Bedrock Power Automated Basketball Scouting"
+    verdict: SKIP
+    note: >-
+      Tutorial framing, two token snippets, no sources, no output. Describes a
+      system rather than showing it.
+
+  - article_id: 3GyA0JyLJpPwqveeakT5ISsbk91
+    title: "Mi experiencia preparándome para AWS Certified Cloud Practitioner"
+    verdict: SKIP
+    note: Certification experience post, 337 words.
+
+  - article_id: 3H1ar2mAdTWf0rVePYH7hOFlo98
+    title: "AI DORA METRICS INSIGHTS"
+    verdict: SKIP
+    note: 190 words, all-caps title, no content.
+
+  - article_id: 3H34sb3Mjr1fHPcHO5uIvG70S3f
+    title: "new title"
+    verdict: SKIP
+    note: >-
+      Four words, placeholder title, published and live in the RSS feed and the
+      sitemap. The floor case.

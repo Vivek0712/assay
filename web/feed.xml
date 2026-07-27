@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>urn:shouldiread:feed</id>
+  <title>ShouldIRead - AWS Builder Center, worth-reading only</title>
+  <subtitle>RQS &gt;= 70, all topics. Scored on execution evidence, not engagement.</subtitle>
+  <updated>2026-07-27T13:01:29.595504+00:00</updated>
+  <link rel="alternate" href="https://builder.aws.com"/>
+  <generator>shouldiread</generator>
+  <entry>
+    <id>https://builder.aws.com/content/3FtOI9H152rOXVRvdRXJdztqC3G/best-practices-for-extending-striped-lvm-storage-in-sap-hana-on-aws</id>
+    <title type="html">Best Practices for Extending Striped LVM Storage in SAP HANA on AWS</title>
+    <link rel="alternate" href="https://builder.aws.com/content/3FtOI9H152rOXVRvdRXJdztqC3G/best-practices-for-extending-striped-lvm-storage-in-sap-hana-on-aws"/>
+    <updated>2026-07-26T05:49:15.731000+00:00</updated>
+    <author><name>pmehulk</name></author>
+    <category term="sap"/><category term="amazon-ec2"/>
+    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 88/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Nine terminal sessions with commands and outputs for extending striped LVM storage in SAP HANA on AWS.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 90/100&lt;/li&gt;&lt;li&gt;code substance: 80/100&lt;/li&gt;&lt;li&gt;source integrity: 90/100&lt;/li&gt;&lt;li&gt;depth: 70/100&lt;/li&gt;&lt;li&gt;originality: 60/100&lt;/li&gt;&lt;/ul&gt;</summary>
+  </entry>
+  <entry>
+    <id>https://builder.aws.com/content/3GiDIJOUJisKlnRDzjvllUwI1bO/what-happens-behind-the-eks-one-click-cluster-access-button</id>
+    <title type="html">What Happens Behind the EKS One-Click Cluster Access Button?</title>
+    <link rel="alternate" href="https://builder.aws.com/content/3GiDIJOUJisKlnRDzjvllUwI1bO/what-happens-behind-the-eks-one-click-cluster-access-button"/>
+    <updated>2026-07-21T13:41:08.967000+00:00</updated>
+    <author><name>yuuuuuuu</name></author>
+    <category term="amazon-eks"/><category term="aws-cloudshell"/>
+    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 87/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Detailed kubectl-connect script tutorial for EKS cluster access.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 90/100&lt;/li&gt;&lt;li&gt;code substance: 85/100&lt;/li&gt;&lt;li&gt;source integrity: 90/100&lt;/li&gt;&lt;li&gt;depth: 80/100&lt;/li&gt;&lt;li&gt;originality: 60/100&lt;/li&gt;&lt;/ul&gt;</summary>
+  </entry>
+  <entry>
+    <id>https://builder.aws.com/content/3GwwVXZ0VS7mdvCn06mruysli4W/dont-break-agents-during-bedrock-model-upgrades</id>
+    <title type="html">Don't Break Agents During Bedrock Model Upgrades</title>
+    <link rel="alternate" href="https://builder.aws.com/content/3GwwVXZ0VS7mdvCn06mruysli4W/dont-break-agents-during-bedrock-model-upgrades"/>
+    <updated>2026-07-24T12:45:55.287000+00:00</updated>
+    <author><name>alexkro</name></author>
+    <category term="generative-ai"/><category term="ai-agents"/><category term="amazon-bedrock-agentcore"/><category term="devops"/><category term="machine-learning"/>
+    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 77/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Eight code blocks on avoiding agent breakage during Bedrock upgrades.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 30/100&lt;/li&gt;&lt;li&gt;code substance: 90/100&lt;/li&gt;&lt;li&gt;source integrity: 95/100&lt;/li&gt;&lt;li&gt;depth: 80/100&lt;/li&gt;&lt;li&gt;originality: 85/100&lt;/li&gt;&lt;/ul&gt;</summary>
+  </entry>
+  <entry>
+    <id>https://builder.aws.com/content/3GnTyoMxKF0g7771kCnU52ML2ZV/adding-aws-dev-ops-agent-as-an-mcp-tool-to-an-agent-core-ai-agent</id>
+    <title type="html">Adding AWS DevOps Agent as an MCP Tool to an AgentCore AI Agent</title>
+    <link rel="alternate" href="https://builder.aws.com/content/3GnTyoMxKF0g7771kCnU52ML2ZV/adding-aws-dev-ops-agent-as-an-mcp-tool-to-an-agent-core-ai-agent"/>
+    <updated>2026-07-21T14:24:39.406000+00:00</updated>
+    <author><name>achlesh</name></author>
+    
+    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 76/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;22 code blocks with 17 passing syntax checks, integrating AWS DevOps Agent into AgentCore AI.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 30/100&lt;/li&gt;&lt;li&gt;code substance: 90/100&lt;/li&gt;&lt;li&gt;source integrity: 90/100&lt;/li&gt;&lt;li&gt;depth: 80/100&lt;/li&gt;&lt;li&gt;originality: 85/100&lt;/li&gt;&lt;/ul&gt;</summary>
+  </entry>
+  <entry>
+    <id>https://builder.aws.com/content/3Gx8K4wJTlWOpkVLC8O4ikzR506/sinch-from-the-command-line-numbers-calls-messages-logs</id>
+    <title type="html">Sinch from the Command Line: Numbers, Calls, Messages, Logs</title>
+    <link rel="alternate" href="https://builder.aws.com/content/3Gx8K4wJTlWOpkVLC8O4ikzR506/sinch-from-the-command-line-numbers-calls-messages-logs"/>
+    <updated>2026-07-24T14:05:13.951000+00:00</updated>
+    <author><name>gunnargrosch</name></author>
+    <category term="javascript"/><category term="cli"/><category term="web-development"/><category term="terminal"/>
+    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 74/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;32 CLI code blocks for Sinch number rental and configuration, no runnable files.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 85/100&lt;/li&gt;&lt;li&gt;code substance: 80/100&lt;/li&gt;&lt;li&gt;source integrity: 30/100&lt;/li&gt;&lt;li&gt;depth: 60/100&lt;/li&gt;&lt;li&gt;originality: 50/100&lt;/li&gt;&lt;/ul&gt;</summary>
+  </entry>
+  <entry>
+    <id>https://builder.aws.com/content/3GvGFpW4zMzdjtOYwfUGpSDJnT4/secure-your-ai-agents-on-aws-part-inputs-identity-and-human-oversight</id>
+    <title type="html">Secure Your AI Agents on AWS (Part 1): Inputs, Identity, and Human Oversight</title>
+    <link rel="alternate" href="https://builder.aws.com/content/3GvGFpW4zMzdjtOYwfUGpSDJnT4/secure-your-ai-agents-on-aws-part-inputs-identity-and-human-oversight"/>
+    <updated>2026-07-23T22:33:17.262000+00:00</updated>
+    <author><name>waz</name></author>
+    <category term="amazon-bedrock-agentcore"/><category term="guardrails"/><category term="security"/><category term="generative-ai"/>
+    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 74/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Conceptual AWS AI agent security tutorial with functional code examples.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 30/100&lt;/li&gt;&lt;li&gt;code substance: 80/100&lt;/li&gt;&lt;li&gt;source integrity: 90/100&lt;/li&gt;&lt;li&gt;depth: 80/100&lt;/li&gt;&lt;li&gt;originality: 85/100&lt;/li&gt;&lt;/ul&gt;</summary>
+  </entry>
+  <entry>
+    <id>https://builder.aws.com/content/2xzcluRtMRvpLber0rD204y93D6/making-your-existing-mcp-server-run-on-agent-core-without-touching-its-code</id>
+    <title type="html">Making Your Existing MCP Server Run on AgentCore Without Touching Its Code</title>
+    <link rel="alternate" href="https://builder.aws.com/content/2xzcluRtMRvpLber0rD204y93D6/making-your-existing-mcp-server-run-on-agent-core-without-touching-its-code"/>
+    <updated>2026-07-26T15:13:00.581000+00:00</updated>
+    <author><name>eryan</name></author>
+    <category term="agentic-ai"/><category term="amazon-bedrock-agentcore"/>
+    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 73/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Detailed, source-backed instructions for running MCP server on AgentCore.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 25/100&lt;/li&gt;&lt;li&gt;code substance: 85/100&lt;/li&gt;&lt;li&gt;source integrity: 90/100&lt;/li&gt;&lt;li&gt;depth: 80/100&lt;/li&gt;&lt;li&gt;originality: 85/100&lt;/li&gt;&lt;/ul&gt;</summary>
+  </entry>
+  <entry>
+    <id>https://builder.aws.com/content/3GvKiC9GWpN2DMlsNERJ2rsGwzl/secure-your-ai-agents-on-aws-part-state-communication-and-detection</id>
+    <title type="html">Secure Your AI Agents on AWS (Part 3): State, Communication, and Detection</title>
+    <link rel="alternate" href="https://builder.aws.com/content/3GvKiC9GWpN2DMlsNERJ2rsGwzl/secure-your-ai-agents-on-aws-part-state-communication-and-detection"/>
+    <updated>2026-07-23T22:51:33.517000+00:00</updated>
+    <author><name>waz</name></author>
+    <category term="amazon-bedrock-agentcore"/><category term="amazon-guardduty"/><category term="generative-ai"/><category term="agentic-ai"/><category term="security"/>
+    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 73/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;In-depth security strategies for AWS AI agents, no execution proof.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 25/100&lt;/li&gt;&lt;li&gt;code substance: 85/100&lt;/li&gt;&lt;li&gt;source integrity: 90/100&lt;/li&gt;&lt;li&gt;depth: 80/100&lt;/li&gt;&lt;li&gt;originality: 85/100&lt;/li&gt;&lt;/ul&gt;</summary>
+  </entry>
+  <entry>
+    <id>https://builder.aws.com/content/3H06NppXZCbehR2rw40HM7yKTV9/part-the-architecture-building-gad-p-on-aws</id>
+    <title type="html">Part 2: The Architecture — Building GAD-P on AWS</title>
+    <link rel="alternate" href="https://builder.aws.com/content/3H06NppXZCbehR2rw40HM7yKTV9/part-the-architecture-building-gad-p-on-aws"/>
+    <updated>2026-07-25T15:24:45.555000+00:00</updated>
+    <author><name>faris4aws</name></author>
+    <category term="amazon-bedrock"/><category term="agentic-ai"/><category term="amazon-athena"/><category term="aws-lake-formation"/><category term="ai-security"/>
+    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 72/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Detailed GAD-P architecture on AWS with cost profile and functional code blocks.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 30/100&lt;/li&gt;&lt;li&gt;code substance: 80/100&lt;/li&gt;&lt;li&gt;source integrity: 90/100&lt;/li&gt;&lt;li&gt;depth: 80/100&lt;/li&gt;&lt;li&gt;originality: 70/100&lt;/li&gt;&lt;/ul&gt;</summary>
+  </entry>
+  <entry>
+    <id>https://builder.aws.com/content/3GXOyuLMZR7WLCptN5kxOEt0KpE/meet-cloudagotchi-building-a-virtual-pet-with-a-cloud-brain-part</id>
+    <title type="html">Meet Cloudagotchi: Building a virtual pet with a cloud brain (Part 1)</title>
+    <link rel="alternate" href="https://builder.aws.com/content/3GXOyuLMZR7WLCptN5kxOEt0KpE/meet-cloudagotchi-building-a-virtual-pet-with-a-cloud-brain-part"/>
+    <updated>2026-07-21T09:40:02.164000+00:00</updated>
+    <author><name>oleplus</name></author>
+    <category term="gen-ai"/><category term="iot"/><category term="serverless"/><category term="amazon-polly"/><category term="amazon-bedrock"/>
+    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 72/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Eleven code blocks with four passing syntax checks, specific IoT setup insights.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 45/100&lt;/li&gt;&lt;li&gt;code substance: 80/100&lt;/li&gt;&lt;li&gt;source integrity: 70/100&lt;/li&gt;&lt;li&gt;depth: 70/100&lt;/li&gt;&lt;li&gt;originality: 80/100&lt;/li&gt;&lt;/ul&gt;</summary>
+  </entry>
+  <entry>
+    <id>https://builder.aws.com/content/3GvJXs3d3lVdVSE25qJZDB35Po9/secure-your-ai-agents-on-aws-part-tool-execution-and-runtime-safety</id>
+    <title type="html">Secure Your AI Agents on AWS (Part 2): Tool Execution and Runtime Safety</title>
+    <link rel="alternate" href="https://builder.aws.com/content/3GvJXs3d3lVdVSE25qJZDB35Po9/secure-your-ai-agents-on-aws-part-tool-execution-and-runtime-safety"/>
+    <updated>2026-07-23T22:41:54.396000+00:00</updated>
+    <author><name>waz</name></author>
+    <category term="amazon-bedrock-agentcore"/><category term="aws-lambda"/><category term="generative-ai"/><category term="agentic-ai"/><category term="security"/>
+    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 71/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Four code blocks for securing AI agents on AWS, no execution evidence.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 25/100&lt;/li&gt;&lt;li&gt;code substance: 85/100&lt;/li&gt;&lt;li&gt;source integrity: 85/100&lt;/li&gt;&lt;li&gt;depth: 80/100&lt;/li&gt;&lt;li&gt;originality: 70/100&lt;/li&gt;&lt;/ul&gt;</summary>
+  </entry>
+  <entry>
+    <id>https://builder.aws.com/content/3GsaeETf9JrYZ02eGil5tamaYu6/your-driver-defaults-are-fine-until-theyre-not</id>
+    <title type="html">Your Driver Defaults Are Fine. Until They're Not.</title>
+    <link rel="alternate" href="https://builder.aws.com/content/3GsaeETf9JrYZ02eGil5tamaYu6/your-driver-defaults-are-fine-until-theyre-not"/>
+    <updated>2026-07-23T00:00:01.667000+00:00</updated>
+    <author><name>allcoaws</name></author>
+    <category term="amazon-documentdb"/><category term="python"/><category term="nosql"/><category term="developer"/><category term="developer-tools"/>
+    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 71/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Python wrapper for Amazon DocumentDB with 4 runnable files, lacks execution evidence.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 30/100&lt;/li&gt;&lt;li&gt;code substance: 80/100&lt;/li&gt;&lt;li&gt;source integrity: 70/100&lt;/li&gt;&lt;li&gt;depth: 85/100&lt;/li&gt;&lt;li&gt;originality: 90/100&lt;/li&gt;&lt;/ul&gt;</summary>
+  </entry>
+</feed>

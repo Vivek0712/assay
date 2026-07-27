@@ -1,0 +1,24 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+
+# ingested corpus + scoring output (regenerable, large)
+data/cache/
+data/corpus/
+data/scores/
+*.egg-info/
+
+# infra
+infra/cdk.out/
+infra/node_modules/
+extension/node_modules/
+.agentcore/
+
+# local scratch
+/tmp/
+*.log
+
+# the blog is published to Builder Center, not versioned here
+blog/

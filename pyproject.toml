@@ -1,0 +1,35 @@
+[project]
+name = "shouldiread"
+version = "0.1.0"
+description = "Agentic triage for AWS Builder Center: tells you what's actually worth reading."
+requires-python = ">=3.11"
+dependencies = [
+    "httpx>=0.27",
+    "boto3>=1.40",
+    "botocore>=1.40",
+    "pyyaml>=6.0",
+    "strands-agents>=0.1.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "pytest-asyncio>=0.24"]
+mcp = ["mcp>=1.2"]
+# The AgentCore Runtime HTTP entrypoint (agentcore_scorer.py) only.
+serve = ["starlette>=0.37", "uvicorn>=0.30"]
+infra = ["aws-cdk-lib>=2.170", "constructs>=10.3"]
+
+[project.scripts]
+# `assay` is the product name; `shouldiread` kept as an alias.
+assay = "shouldiread.cli:main"
+shouldiread = "shouldiread.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/shouldiread"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"

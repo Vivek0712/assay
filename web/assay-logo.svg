@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-labelledby="lt ld">
+<title id="lt">Assay</title>
+<desc id="ld">A grid of empty cells with three filled gradient blocks, marking the small proportion of articles that carry real evidence.</desc>
+
+<defs>
+  <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#8B5CF6"/>
+    <stop offset="1" stop-color="#F03CE8"/>
+  </linearGradient>
+  <linearGradient id="g2" x1="0" y1="1" x2="1" y2="0">
+    <stop offset="0" stop-color="#FB4E6D"/>
+    <stop offset="1" stop-color="#E838C8"/>
+  </linearGradient>
+  <clipPath id="round"><rect width="256" height="256" rx="56"/></clipPath>
+</defs>
+
+<g clip-path="url(#round)">
+  <rect width="256" height="256" fill="#161D26"/>
+
+  <!-- the empty grid: what most of a week's publishing looks like -->
+  <g stroke="#2A323D" stroke-width="1.5" fill="none">
+    <path d="M64 0V256M128 0V256M192 0V256M0 64H256M0 128H256M0 192H256"/>
+  </g>
+
+  <!-- the cells that assay positive -->
+  <rect x="128" y="0"  width="128" height="64" fill="url(#g1)"/>
+  <rect x="64"  y="64" width="64"  height="64" fill="url(#g1)" opacity=".92"/>
+  <rect x="0"   y="128" width="128" height="128" fill="url(#g2)"/>
+</g>
+</svg>

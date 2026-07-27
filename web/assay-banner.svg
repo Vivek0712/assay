@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-labelledby="bt bd">
+<title id="bt">Assay — read-quality scoring for AWS Builder Center</title>
+<desc id="bd">Dark grid banner. Most cells are empty; three are filled with gradient, standing for the small share of articles that carry evidence of having been run. Headline reads Assay, with the subtitle "Which of this week's 307 articles did anyone actually run?" and the verdict scale READ, SKIM, SKIP.</desc>
+
+<defs>
+  <linearGradient id="v1" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#8B5CF6"/>
+    <stop offset="1" stop-color="#F03CE8"/>
+  </linearGradient>
+  <linearGradient id="v2" x1="0" y1="1" x2="1" y2="0">
+    <stop offset="0" stop-color="#FB4E6D"/>
+    <stop offset="1" stop-color="#E838C8"/>
+  </linearGradient>
+  <linearGradient id="v3" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#C13AE0"/>
+    <stop offset="1" stop-color="#E23CD8"/>
+  </linearGradient>
+  <linearGradient id="fade" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#161D26" stop-opacity="1"/>
+    <stop offset=".62" stop-color="#161D26" stop-opacity=".97"/>
+    <stop offset="1" stop-color="#161D26" stop-opacity="0"/>
+  </linearGradient>
+</defs>
+
+<rect width="1200" height="675" fill="#161D26"/>
+
+<!-- 8 x 4.5 grid of 150px cells: the corpus, mostly empty -->
+<g stroke="#242C37" stroke-width="1.5" fill="none">
+  <path d="M150 0V675M300 0V675M450 0V675M600 0V675M750 0V675M900 0V675M1050 0V675"/>
+  <path d="M0 150H1200M0 300H1200M0 450H1200M0 600H1200"/>
+</g>
+
+<!-- Text ground first, so it never dims the gradient cells drawn over it. -->
+<rect x="0" y="120" width="600" height="330" fill="url(#fade)"/>
+
+<!-- the cells that assay positive: real evidence, roughly to scale -->
+<rect x="750" y="0"   width="450" height="150" fill="url(#v1)"/>
+<rect x="600" y="300" width="150" height="150" fill="url(#v3)"/>
+<rect x="0"   y="450" width="450" height="225" fill="url(#v2)"/>
+
+<!-- wordmark -->
+<g font-family="ui-sans-serif,-apple-system,'Segoe UI',Inter,system-ui,sans-serif">
+  <text x="80" y="252" fill="#F5F3EF" font-size="112" font-weight="700" letter-spacing="-.045em">Assay</text>
+
+  <text x="84" y="306" fill="#B9B4AC" font-size="23" letter-spacing=".01em">
+    Read-quality scoring for AWS Builder Center
+  </text>
+
+  <text x="84" y="366" fill="#8E8880" font-size="19">
+    Which of this week’s 307 articles did anyone actually run?
+  </text>
+
+  <!-- verdict scale -->
+  <g font-size="15" font-weight="700" letter-spacing=".14em">
+    <rect x="84"  y="396" width="92"  height="34" rx="17" fill="none" stroke="#5FD1A4" stroke-width="1.5"/>
+    <text x="106" y="419" fill="#5FD1A4">READ</text>
+
+    <rect x="188" y="396" width="92"  height="34" rx="17" fill="none" stroke="#E3B34D" stroke-width="1.5"/>
+    <text x="209" y="419" fill="#E3B34D">SKIM</text>
+
+    <rect x="292" y="396" width="92"  height="34" rx="17" fill="none" stroke="#F2887A" stroke-width="1.5"/>
+    <text x="316" y="419" fill="#F2887A">SKIP</text>
+  </g>
+
+  <!-- the thesis, bottom right over the dark grid -->
+  <text x="1120" y="628" fill="#7E7871" font-size="17" text-anchor="end">
+    Measured, not upvoted.
+  </text>
+</g>
+</svg>

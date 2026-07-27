@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+:root {
+  color-scheme: light dark;
+  --bg:#fbfbfa; --fg:#16150f; --muted:#6b6a63; --line:#e3e2dc; --card:#fff;
+  --read:#1a7f5a; --skip:#a33b30;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#14140f; --fg:#ecebe4; --muted:#96958c; --line:#2c2b24; --card:#1c1b16;
+          --read:#5fd1a4; --skip:#f2887a; }
+}
+* { box-sizing: border-box; }
+body {
+  width: 320px; margin: 0; padding: 16px; background: var(--bg); color: var(--fg);
+  font: 13px/1.5 ui-sans-serif, -apple-system, "Segoe UI", system-ui, sans-serif;
+}
+h1 { font-size: 15px; margin: 0 0 3px; letter-spacing: -.01em; }
+p.sub { color: var(--muted); font-size: 11.5px; margin: 0 0 14px; }
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.stat { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; }
+.stat b { display: block; font-size: 17px; font-variant-numeric: tabular-nums; }
+.stat span { color: var(--muted); font-size: 10.5px; }
+label { display: flex; align-items: center; justify-content: space-between; gap: 10px;
+        padding: 7px 0; border-top: 1px solid var(--line); }
+label span.lbl { font-size: 12.5px; }
+input[type=number], input[type=url] {
+  font: inherit; font-size: 12px; padding: 4px 7px; border-radius: 6px;
+  border: 1px solid var(--line); background: var(--card); color: var(--fg); width: 130px;
+}
+input[type=number] { width: 62px; }
+footer { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line);
+         color: var(--muted); font-size: 11px; }
+a { color: inherit; }
+#saved { color: var(--read); font-size: 11px; height: 14px; }
+</style>
+</head>
+<body>
+<h1>ShouldIRead</h1>
+<p class="sub">Read-Quality Scores on builder.aws.com, from execution evidence rather than likes.</p>
+
+<div class="stats" id="stats"></div>
+
+<label><span class="lbl">Show badges</span><input type="checkbox" id="enabled"></label>
+<label><span class="lbl">Hide SKIP articles</span><input type="checkbox" id="hideSkips"></label>
+<label><span class="lbl">Minimum score</span><input type="number" id="minRqs" min="0" max="100" step="5"></label>
+<label><span class="lbl">Score API</span><input type="url" id="apiBase" placeholder="https://..."></label>
+
+<div id="saved"></div>
+<footer>Scores update every 15 minutes. SKIP articles are scored but never named publicly.</footer>
+
+<script src="popup.js"></script>
+</body>
+</html>

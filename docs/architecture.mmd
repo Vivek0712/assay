@@ -1,0 +1,63 @@
+%% ShouldIRead architecture (mermaid source; docs/architecture.svg is the rendered version)
+flowchart TB
+
+  subgraph DISCOVERY["1 · Discovery — builder.aws.com, public, no auth"]
+    RSS["/rss<br/>Atom · 30 newest · hourly"]
+    SM["/sitemaps/articles/YYYY-M.xml<br/>55 files · backfill to 2022"]
+    API["GET /cs/v2/articles?articleId=…<br/>header builder-session-token: dummy<br/>→ raw markdown + author + tags"]
+  end
+
+  subgraph INGEST["2 · Ingest"]
+    EB["EventBridge<br/>rate(1 hour)"] --> IL["Ingest Lambda<br/>diff vs scored"]
+    IL --> S3[("S3<br/>raw markdown")]
+    IL --> SL["Score Lambda<br/>async · batches of 10"]
+  end
+
+  subgraph TOOLS["3a · Deterministic tool belt — exact, model-free"]
+    T1["check_aws_api_names<br/>botocore · 426 services<br/>invented API = never run"]
+    T2["validate_code<br/>ast · bash -n · yaml · node"]
+    T3["verify_links<br/>resolve + classify"]
+    T4["structure_stats<br/>transcripts · headings · units"]
+    T5["cross_post_check<br/>MinHash near-duplicates"]
+    T6["placeholder_density"]
+    T7["engagement_ratio<br/>flags only · never rewards"]
+  end
+
+  subgraph FLEET["3b · Strands fleet — Bedrock AgentCore Runtime"]
+    TR["TRIAGE · nova-2-lite<br/>cheap gate, classifies type"]
+    TR --> PR["PROVENANCE<br/>did they run it?"]
+    TR --> CD["CODE<br/>substantial?"]
+    TR --> SR["SOURCE<br/>checkable?"]
+    TR --> DP["DEPTH<br/>beyond the docs?"]
+    PR --> CAP
+    CD --> CAP
+    SR --> CAP
+    DP --> CAP
+    CAP["CAPS — measured reality overrides model opinion<br/>no code ⇒ code ≤ 20 · no artefacts ⇒ execution ≤ 25<br/>invented API ⇒ code and sources ≤ 25"]
+    CAP --> RQS["RQS = weighted sum in Python<br/>→ VERDICT writes the one-line reason"]
+  end
+
+  subgraph STORE["4 · Store"]
+    DDB[("DynamoDB<br/>scores + GSI by-verdict-rqs")]
+    PREF[("DynamoDB<br/>reader preferences")]
+  end
+
+  subgraph SERVE["5 · Serve — public, cached at the edge"]
+    PAGE["Leaderboard page<br/>CloudFront + S3"]
+    FEED["Filtered Atom feed<br/>/feed.xml"]
+    MCP["MCP server<br/>AgentCore · Quick Suite, Claude"]
+    EXT["Chrome extension<br/>badges on builder.aws.com"]
+  end
+
+  RSS --> IL
+  SM --> IL
+  API --> IL
+  SL --> TOOLS
+  TOOLS -- "MEASURED SIGNALS<br/>judges may interpret, never contradict" --> TR
+  RQS --> DDB
+  DDB --> PAGE
+  DDB --> FEED
+  DDB --> MCP
+  DDB --> EXT
+  PREF --> FEED
+  PREF --> MCP

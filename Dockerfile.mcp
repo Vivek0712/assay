@@ -1,0 +1,19 @@
+# MCP server for Bedrock AgentCore Runtime.
+# AgentCore requires linux/arm64 and a stateless streamable-HTTP MCP server
+# listening on 0.0.0.0:8000 at /mcp.
+FROM --platform=linux/arm64 public.ecr.aws/docker/library/python:3.12-slim
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PORT=8000
+
+WORKDIR /app
+
+COPY pyproject.toml README.md ./
+COPY src ./src
+RUN pip install --no-cache-dir . "mcp>=1.2"
+
+EXPOSE 8000
+
+CMD ["python", "-m", "shouldiread.mcp_server", "--http"]

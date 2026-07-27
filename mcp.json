@@ -1,0 +1,61 @@
+{
+  "$comment": [
+    "Assay MCP server — drop this into your MCP client and ask it what is worth",
+    "reading on AWS Builder Center, or hand it your own draft for feedback.",
+    "",
+    "Claude Desktop : merge the mcpServers block into claude_desktop_config.json",
+    "Claude Code    : claude mcp add assay -- /abs/path/.venv/bin/python -m shouldiread.mcp_server",
+    "Quick Suite    : use the remote entry below (SigV4, service bedrock-agentcore)",
+    "",
+    "Replace /abs/path with wherever you cloned the repo."
+  ],
+
+  "mcpServers": {
+    "assay": {
+      "command": "/abs/path/to/assay/.venv/bin/python",
+      "args": ["-m", "shouldiread.mcp_server"],
+      "env": {
+        "SIR_RUN": "week"
+      }
+    },
+
+    "assay-hosted": {
+      "$comment": [
+        "Reads the deployed corpus from DynamoDB instead of a local run.",
+        "Needs AWS credentials with read access to the scores table."
+      ],
+      "command": "/abs/path/to/assay/.venv/bin/python",
+      "args": ["-m", "shouldiread.mcp_server"],
+      "env": {
+        "AWS_PROFILE": "default",
+        "AWS_REGION": "us-east-1",
+        "SCORES_TABLE": "ShouldIRead-ScoresTable6CB35494-RKHVY5HKM4E1",
+        "PREFS_TABLE": "ShouldIRead-PreferencesTableC3683986-Y6P649M8Y0L8"
+      }
+    }
+  },
+
+  "remote": {
+    "$comment": [
+      "Bedrock AgentCore Runtime, streamable HTTP MCP. Requests are SigV4-signed",
+      "against service name 'bedrock-agentcore'; the caller needs",
+      "bedrock-agentcore:InvokeAgentRuntime on the runtime ARN.",
+      "See docs/connect-mcp.md for a worked signed request."
+    ],
+    "runtimeArn": "arn:aws:bedrock-agentcore:us-east-1:643603452951:runtime/shouldiread_mcp-4iAgDjBOFc",
+    "region": "us-east-1",
+    "service": "bedrock-agentcore",
+    "protocol": "MCP"
+  },
+
+  "tools": [
+    { "name": "get_reading_queue", "description": "Ranked articles worth reading, filtered by topic, minimum RQS, author kind and age" },
+    { "name": "review_article",    "description": "Score an article or draft and return ranked recommendations, each priced in RQS points" },
+    { "name": "score_url",         "description": "Score any Builder Center article on demand" },
+    { "name": "explain_score",     "description": "Full evidence breakdown, including base_rqs versus author_bonus" },
+    { "name": "search_scored",     "description": "Search the scored corpus by title, tag, author or headline" },
+    { "name": "set_preferences",   "description": "Persist topic and threshold preferences" },
+    { "name": "get_preferences",   "description": "Read back saved preferences" },
+    { "name": "corpus_stats",      "description": "Aggregate statistics: how much of Builder Center is worth reading" }
+  ]
+}
