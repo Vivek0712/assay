@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-labelledby="mt md">
+<title id="mt">Assay</title>
+<desc id="md">Square Assay mark: a grid in which most cells are empty and three carry a gradient.</desc>
+
+<defs>
+  <linearGradient id="mg1" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#8B5CF6"/>
+    <stop offset="1" stop-color="#F03CE8"/>
+  </linearGradient>
+  <linearGradient id="mg2" x1="0" y1="1" x2="1" y2="0">
+    <stop offset="0" stop-color="#FB4E6D"/>
+    <stop offset="1" stop-color="#E838C8"/>
+  </linearGradient>
+  <clipPath id="mround"><rect width="256" height="256" rx="56"/></clipPath>
+</defs>
+
+<g clip-path="url(#mround)">
+  <rect width="256" height="256" fill="#161D26"/>
+  <g stroke="#2A323D" stroke-width="1.5" fill="none">
+    <path d="M64 0V256M128 0V256M192 0V256M0 64H256M0 128H256M0 192H256"/>
+  </g>
+  <rect x="128" y="0"   width="128" height="64"  fill="url(#mg1)"/>
+  <rect x="64"  y="64"  width="64"  height="64"  fill="url(#mg1)" opacity=".92"/>
+  <rect x="0"   y="128" width="128" height="128" fill="url(#mg2)"/>
+</g>
+</svg>

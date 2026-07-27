@@ -74,7 +74,7 @@ def main() -> int:
         build_review_page(api_base=out["SiteUrl"]),
     ]
     # Brand assets are static; ship them alongside so the pages resolve the logo.
-    files += [p for p in (Path("web/assay-logo.svg"), Path("web/assay-banner.svg")) if p.exists()]
+    files += [p for p in (Path("web/assay-logo.svg"), Path("web/assay-mark.svg"), Path("web/assay-banner.svg")) if p.exists()]
 
     s3 = session.client("s3")
     for path in files:

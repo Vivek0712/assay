@@ -94,6 +94,7 @@ def render_page(scores: list[dict[str, Any]], *, generated: str | None = None) -
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="/assay-mark.svg">
 <title>Assay - read-quality scoring for AWS Builder Center</title>
 <meta name="description" content="Assay reads AWS Builder Center and scores every article on measurable evidence rather than likes.">
 <style>
@@ -117,8 +118,7 @@ body {{ margin:0; background:var(--bg); color:var(--fg);
 header {{ padding:40px 0 28px; border-bottom:1px solid var(--line); }}
 .brand {{ display:inline-flex; align-items:center; gap:10px; text-decoration:none; color:inherit;
   margin:0 0 22px; }}
-.brand img {{ border-radius:8px; display:block; }}
-.brand span {{ font-weight:600; letter-spacing:-.012em; font-size:17px; }}
+.brand img {{ display:block; }}
 h1 {{ font-size:clamp(28px,5vw,42px); margin:0 0 10px; letter-spacing:-.022em; }}
 .sub {{ color:var(--muted); max-width:60ch; margin:0; }}
 .stats {{ display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
@@ -167,7 +167,7 @@ code {{ background:var(--card); border:1px solid var(--line); border-radius:4px;
 <body>
 <div class="wrap">
 <header>
-  <a class="brand" href="/"><img src="/assay-logo.svg" alt="" width="34" height="34"><span>Assay</span></a>
+  <a class="brand" href="/"><img src="/assay-logo.svg" alt="Assay" width="187" height="52"></a>
   <h1>Should I read this?</h1>
   <p class="sub">An agent reads AWS Builder Center so you don't have to. Every article gets a
   <strong>Read-Quality Score</strong> built from what can be measured &mdash; pasted terminal output,
