@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 812" width="1040" height="812" role="img" aria-labelledby="t d">
-<title id="t">ShouldIRead architecture</title>
-<desc id="d">Discovery from builder.aws.com feeds and article API, hourly ingest into S3, deterministic tool belt feeding a Strands multi-agent fleet on Bedrock AgentCore, scores stored in DynamoDB and served through a leaderboard page, Atom feed, MCP server and Chrome extension.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 892" width="1040" height="892" role="img" aria-labelledby="t d">
+<title id="t">Assay architecture</title>
+<desc id="d">Discovery from builder.aws.com feeds and article API, hourly ingest into S3, eight deterministic tools feeding four Strands judges on Bedrock AgentCore that score fifteen dimensions, caps and a weighted sum in Python, scores stored in DynamoDB and served through a leaderboard page, review portal, Atom feed, MCP server and Chrome extension.</desc>
 
 <style>
   :root { color-scheme: light dark; }
@@ -39,11 +39,11 @@
   </marker>
 </defs>
 
-<rect class="bg" width="1040" height="812"/>
+<rect class="bg" width="1040" height="892"/>
 
 <!-- ============================ header ============================ -->
-<text class="t" x="40" y="46" font-size="21" font-weight="600" letter-spacing="-.01em">ShouldIRead — agentic read-quality triage for AWS Builder Center</text>
-<text class="t muted" x="40" y="68" font-size="12.5">Every score traces to a measurement. Likes, views and comments are excluded by design.</text>
+<text class="t" x="40" y="46" font-size="21" font-weight="600" letter-spacing="-.01em">Assay — read-quality scoring for AWS Builder Center</text>
+<text class="t muted" x="40" y="68" font-size="12.5">Measure first, judge second, compute the score in Python. Likes, views and comments are excluded by design.</text>
 
 <!-- ============================ 1. DISCOVERY ============================ -->
 <rect class="band" x="40" y="92" width="960" height="96" rx="10"/>
@@ -55,13 +55,12 @@
 
 <rect class="card" x="300" y="122" width="248" height="50" rx="7"/>
 <text class="t mono" x="314" y="142" font-size="11.5">/sitemaps/articles/YYYY-M.xml</text>
-<text class="t muted" x="314" y="159" font-size="10.5">55 monthly files · full backfill to 2022</text>
+<text class="t muted" x="314" y="159" font-size="10.5">monthly files · full backfill to 2022</text>
 
 <rect class="accent" x="564" y="122" width="420" height="50" rx="7"/>
 <text class="t mono" x="578" y="142" font-size="11.5">GET api.builder.aws.com/cs/v2/articles?articleId=…</text>
-<text class="t muted" x="578" y="159" font-size="10.5">header <tspan class="mono">builder-session-token: dummy</tspan> → raw markdown + author + tags</text>
+<text class="t muted" x="578" y="159" font-size="10.5">header <tspan class="mono">builder-session-token: dummy</tspan> — raw markdown + author + tags</text>
 
-<!-- arrow 1 -> 2 -->
 <path class="arrow" d="M520 188 L520 214" marker-end="url(#ah)"/>
 
 <!-- ============================ 2. INGEST ============================ -->
@@ -74,7 +73,7 @@
 
 <rect class="card" x="290" y="246" width="212" height="44" rx="7"/>
 <text class="t" x="304" y="266" font-size="12" font-weight="500">Ingest Lambda</text>
-<text class="t muted" x="304" y="281" font-size="10.5">diff vs scored · fan out in 10s</text>
+<text class="t muted" x="304" y="281" font-size="10.5">diff vs already scored</text>
 
 <rect class="card" x="524" y="246" width="212" height="44" rx="7"/>
 <text class="t" x="538" y="266" font-size="12" font-weight="500">S3 — raw markdown</text>
@@ -82,7 +81,7 @@
 
 <rect class="card" x="758" y="246" width="226" height="44" rx="7"/>
 <text class="t" x="772" y="266" font-size="12" font-weight="500">Score Lambda</text>
-<text class="t muted" x="772" y="281" font-size="10.5">async · batches of 10</text>
+<text class="t muted" x="772" y="281" font-size="10.5">15 latest · rolling 3-day window</text>
 
 <path class="arrow" d="M268 268 L286 268" marker-end="url(#ah)"/>
 <path class="arrow" d="M502 268 L520 268" marker-end="url(#ah)"/>
@@ -90,128 +89,136 @@
 
 <path class="arrow" d="M520 304 L520 330" marker-end="url(#ah)"/>
 
-<!-- ============================ 3. ANALYSIS ============================ -->
-<rect class="band" x="40" y="332" width="960" height="286" rx="10"/>
+<!-- ============================ 3. SCORING ============================ -->
+<rect class="band" x="40" y="332" width="960" height="372" rx="10"/>
 <text class="t band-label" x="56" y="352" font-size="9.5" font-weight="600">3 · SCORING — deterministic measurement, then judgement</text>
 
 <!-- 3a tool belt -->
-<rect class="card" x="56" y="362" width="404" height="240" rx="8"/>
+<rect class="card" x="56" y="362" width="404" height="326" rx="8"/>
 <text class="t" x="72" y="384" font-size="12.5" font-weight="600">Deterministic tool belt</text>
 <text class="t muted" x="72" y="400" font-size="10.5">exact · model-free · runs first</text>
 
 <rect class="accent" x="72" y="410" width="372" height="34" rx="6"/>
 <text class="t mono" x="84" y="425" font-size="10.5" font-weight="600">check_aws_api_names</text>
-<text class="t muted" x="84" y="438" font-size="9.5">every API verified against botocore's 426 services — invented API = never run</text>
+<text class="t muted" x="84" y="438" font-size="9.5">every API checked against botocore's 426 service definitions</text>
 
 <rect class="card" x="72" y="452" width="181" height="30" rx="6"/>
-<text class="t mono" x="82" y="465" font-size="10">validate_code</text>
-<text class="t muted" x="82" y="476" font-size="9">ast · bash -n · yaml · node</text>
+<text class="t mono" x="82" y="465" font-size="10">aws_footprint</text>
+<text class="t muted" x="82" y="476" font-size="9">operated vs merely named</text>
 
 <rect class="card" x="263" y="452" width="181" height="30" rx="6"/>
-<text class="t mono" x="273" y="465" font-size="10">verify_links</text>
-<text class="t muted" x="273" y="476" font-size="9">resolve + classify sources</text>
+<text class="t mono" x="273" y="465" font-size="10">validate_code</text>
+<text class="t muted" x="273" y="476" font-size="9">ast · bash -n · yaml · node</text>
 
 <rect class="card" x="72" y="490" width="181" height="30" rx="6"/>
-<text class="t mono" x="82" y="503" font-size="10">structure_stats</text>
-<text class="t muted" x="82" y="514" font-size="9">transcripts · headings · units</text>
+<text class="t mono" x="82" y="503" font-size="10">verify_links</text>
+<text class="t muted" x="82" y="514" font-size="9">resolve + classify sources</text>
 
 <rect class="card" x="263" y="490" width="181" height="30" rx="6"/>
-<text class="t mono" x="273" y="503" font-size="10">cross_post_check</text>
-<text class="t muted" x="273" y="514" font-size="9">MinHash near-duplicates</text>
+<text class="t mono" x="273" y="503" font-size="10">structure_stats</text>
+<text class="t muted" x="273" y="514" font-size="9">transcripts · headings · placeholders</text>
 
 <rect class="card" x="72" y="528" width="181" height="30" rx="6"/>
-<text class="t mono" x="82" y="541" font-size="10">placeholder_density</text>
-<text class="t muted" x="82" y="552" font-size="9">runnable vs decorative</text>
+<text class="t mono" x="82" y="541" font-size="10">find_artifacts</text>
+<text class="t muted" x="82" y="552" font-size="9">repos · packages · demos</text>
 
 <rect class="card" x="263" y="528" width="181" height="30" rx="6"/>
-<text class="t mono" x="273" y="541" font-size="10">engagement_ratio</text>
-<text class="t muted" x="273" y="552" font-size="9">flags only · never rewards</text>
+<text class="t mono" x="273" y="541" font-size="10">cross_post_check</text>
+<text class="t muted" x="273" y="552" font-size="9">MinHash near-duplicates</text>
 
-<text class="t muted" x="72" y="580" font-size="10">Output: the MEASURED SIGNALS block. Judges may interpret it,</text>
-<text class="t muted" x="72" y="594" font-size="10">but may never contradict it.</text>
+<rect class="card" x="72" y="566" width="372" height="30" rx="6"/>
+<text class="t mono" x="82" y="579" font-size="10">engagement_ratio</text>
+<text class="t muted" x="82" y="590" font-size="9">wired one way: flags implausible likes on a thin post, never rewards them</text>
 
-<path class="arrow" d="M460 482 L494 482" marker-end="url(#ah)"/>
+<text class="t muted" x="72" y="622" font-size="10">Output: the MEASURED SIGNALS block. Judges may interpret it,</text>
+<text class="t muted" x="72" y="636" font-size="10">but may never contradict it.</text>
 
-<!-- 3b agent fleet -->
-<rect class="agent" x="498" y="362" width="486" height="240" rx="8"/>
-<text class="t" x="514" y="384" font-size="12.5" font-weight="600">Strands multi-agent fleet — Bedrock AgentCore Runtime</text>
-<text class="t muted" x="514" y="400" font-size="10.5">fresh agent per article: no shared conversation, no cross-contamination</text>
+<path class="arrow" d="M460 512 L494 512" marker-end="url(#ah)"/>
+
+<!-- 3b judge fleet -->
+<rect class="agent" x="498" y="362" width="486" height="326" rx="8"/>
+<text class="t" x="514" y="384" font-size="12.5" font-weight="600">Strands judges — Bedrock AgentCore Runtime</text>
+<text class="t muted" x="514" y="400" font-size="10.5">a fresh agent per invocation: no shared conversation, no cross-contamination</text>
 
 <rect class="card" x="514" y="410" width="454" height="32" rx="6"/>
 <text class="t" x="526" y="424" font-size="10.5" font-weight="600">TRIAGE</text>
-<text class="t muted" x="580" y="424" font-size="10">cheap gate · nova-2-lite · classifies type, drops the empty</text>
-<text class="t muted" x="526" y="436" font-size="9">articles under 200 words never reach a model at all</text>
+<text class="t muted" x="580" y="424" font-size="10">cheap gate · nova-2-lite · classifies content type</text>
+<text class="t muted" x="526" y="436" font-size="9">an announcement costs one cheap call, never four expensive ones</text>
 
-<path class="arrow" d="M741 442 L741 456" marker-end="url(#ah)"/>
+<path class="arrow" d="M741 442 L741 454" marker-end="url(#ah)"/>
 
-<rect class="card" x="514" y="458" width="110" height="46" rx="6"/>
-<text class="t" x="524" y="474" font-size="10" font-weight="600">PROVENANCE</text>
-<text class="t muted" x="524" y="486" font-size="9">did they</text>
-<text class="t muted" x="524" y="497" font-size="9">actually run it?</text>
+<rect class="card" x="514" y="456" width="454" height="28" rx="6"/>
+<text class="t" x="526" y="474" font-size="10" font-weight="600">CONTENT</text>
+<text class="t num" x="596" y="474" font-size="10" font-weight="600">35</text>
+<text class="t muted" x="620" y="474" font-size="9">substance · depth · insight · accuracy · scope</text>
 
-<rect class="card" x="629" y="458" width="110" height="46" rx="6"/>
-<text class="t" x="639" y="474" font-size="10" font-weight="600">CODE</text>
-<text class="t muted" x="639" y="486" font-size="9">substantial or</text>
-<text class="t muted" x="639" y="497" font-size="9">decorative?</text>
+<rect class="card" x="514" y="490" width="454" height="28" rx="6"/>
+<text class="t" x="526" y="508" font-size="10" font-weight="600">AWS</text>
+<text class="t num" x="596" y="508" font-size="10" font-weight="600">28</text>
+<text class="t muted" x="620" y="508" font-size="9">service depth · architecture · well-architected · currency · cost</text>
 
-<rect class="card" x="744" y="458" width="110" height="46" rx="6"/>
-<text class="t" x="754" y="474" font-size="10" font-weight="600">SOURCE</text>
-<text class="t muted" x="754" y="486" font-size="9">anchored to</text>
-<text class="t muted" x="754" y="497" font-size="9">anything checkable?</text>
+<rect class="card" x="514" y="524" width="454" height="28" rx="6"/>
+<text class="t" x="526" y="542" font-size="10" font-weight="600">EVIDENCE</text>
+<text class="t num" x="596" y="542" font-size="10" font-weight="600">22</text>
+<text class="t muted" x="620" y="542" font-size="9">evidence · sources · code quality</text>
 
-<rect class="card" x="859" y="458" width="109" height="46" rx="6"/>
-<text class="t" x="869" y="474" font-size="10" font-weight="600">DEPTH</text>
-<text class="t muted" x="869" y="486" font-size="9">beyond the docs?</text>
-<text class="t muted" x="869" y="497" font-size="9">own material?</text>
+<rect class="card" x="514" y="558" width="454" height="28" rx="6"/>
+<text class="t" x="526" y="576" font-size="10" font-weight="600">READER</text>
+<text class="t num" x="596" y="576" font-size="10" font-weight="600">15</text>
+<text class="t muted" x="620" y="576" font-size="9">clarity · actionability</text>
 
-<text class="t muted" x="514" y="518" font-size="9.5">four judges, concurrent · nova-pro</text>
+<text class="t muted" x="514" y="600" font-size="9.5">15 dimensions in 4 concurrent calls · nova-pro · each sampled 3 times, per-dimension median</text>
 
-<path class="arrow" d="M741 522 L741 534" marker-end="url(#ah)"/>
+<path class="arrow" d="M741 606 L741 616" marker-end="url(#ah)"/>
 
-<rect class="accent" x="514" y="536" width="454" height="30" rx="6"/>
-<text class="t" x="526" y="550" font-size="10.5" font-weight="600">CAPS</text>
-<text class="t muted" x="566" y="550" font-size="9.5">measured reality overrides model opinion — no code ⇒ code score ≤ 20;</text>
-<text class="t muted" x="566" y="561" font-size="9.5">no artefacts ⇒ execution ≤ 25; invented API ⇒ code and sources ≤ 25</text>
+<rect class="accent" x="514" y="618" width="454" height="30" rx="6"/>
+<text class="t" x="526" y="632" font-size="10.5" font-weight="600">CAPS</text>
+<text class="t muted" x="566" y="632" font-size="9.5">measurement overrides opinion — services named but never operated,</text>
+<text class="t muted" x="566" y="643" font-size="9.5">AWS depth ≤ 49; an API that does not exist, code ≤ 29 and accuracy ≤ 35</text>
 
-<path class="arrow" d="M741 566 L741 578" marker-end="url(#ah)"/>
+<path class="arrow" d="M741 648 L741 656" marker-end="url(#ah)"/>
 
-<rect class="card" x="514" y="578" width="454" height="24" rx="6"/>
-<text class="t" x="526" y="588" font-size="9.5"><tspan font-weight="600">RQS</tspan> = weighted sum in Python  +  author credibility (Hero +8 · Amazonian +6 · CB +3)</text>
-<text class="t muted" x="526" y="598" font-size="8.5">bonus applied here, never inside a judge — judges never see who wrote it  →  <tspan font-weight="600">VERDICT</tspan> writes the reason</text>
+<rect class="card" x="514" y="656" width="454" height="26" rx="6"/>
+<text class="t" x="526" y="667" font-size="9.5"><tspan font-weight="600">RQS</tspan> = weighted sum in Python  +  author credibility (Hero +8 · Amazonian +6 · CB +3)</text>
+<text class="t muted" x="526" y="677" font-size="8.5">bonus applied here, never inside a judge — judges never see who wrote it</text>
 
-<path class="arrow" d="M520 618 L520 646" marker-end="url(#ah)"/>
+<path class="arrow" d="M520 704 L520 730" marker-end="url(#ah)"/>
 
 <!-- ============================ 4. STORE ============================ -->
-<rect class="band" x="40" y="648" width="960" height="52" rx="10"/>
-<text class="t band-label" x="56" y="668" font-size="9.5" font-weight="600">4 · STORE</text>
-<text class="t" x="150" y="670" font-size="11.5" font-weight="500">DynamoDB</text>
-<text class="t muted" x="222" y="670" font-size="10.5">scores + GSI by-verdict-rqs</text>
-<text class="t" x="470" y="670" font-size="11.5" font-weight="500">DynamoDB</text>
-<text class="t muted" x="542" y="670" font-size="10.5">reader preferences</text>
-<text class="t muted" x="760" y="670" font-size="10.5">RQS 0–100 → READ ≥ 70 · SKIM ≥ 40 · SKIP</text>
-<line class="rule" x1="56" y1="680" x2="984" y2="680"/>
-<text class="t muted" x="56" y="694" font-size="10">Attribution policy applied on read: READ and SKIM are named and linked; SKIP publishes its score and reasons but never the author.</text>
+<rect class="band" x="40" y="732" width="960" height="52" rx="10"/>
+<text class="t band-label" x="56" y="752" font-size="9.5" font-weight="600">4 · STORE</text>
+<text class="t" x="150" y="754" font-size="11.5" font-weight="500">DynamoDB</text>
+<text class="t muted" x="222" y="754" font-size="10.5">scores + GSI by-verdict-rqs</text>
+<text class="t" x="470" y="754" font-size="11.5" font-weight="500">DynamoDB</text>
+<text class="t muted" x="542" y="754" font-size="10.5">reader preferences</text>
+<text class="t muted" x="742" y="754" font-size="10.5">RQS 0–100 · READ ≥ 70 · SKIM ≥ 40 · SKIP</text>
+<line class="rule" x1="56" y1="764" x2="984" y2="764"/>
+<text class="t muted" x="56" y="778" font-size="10">Attribution policy applied on read: READ and SKIM are named and linked; SKIP publishes its score and reasons but never the author.</text>
 
-<path class="arrow" d="M520 700 L520 726" marker-end="url(#ah)"/>
+<path class="arrow" d="M520 784 L520 808" marker-end="url(#ah)"/>
 
 <!-- ============================ 5. SERVE ============================ -->
-<rect class="band" x="40" y="728" width="960" height="68" rx="10"/>
-<text class="t band-label" x="56" y="748" font-size="9.5" font-weight="600">5 · SERVE — public, cached at the edge</text>
+<rect class="band" x="40" y="810" width="960" height="68" rx="10"/>
+<text class="t band-label" x="56" y="830" font-size="9.5" font-weight="600">5 · SERVE — one preference filter, five surfaces</text>
 
-<rect class="card" x="56" y="756" width="222" height="32" rx="7"/>
-<text class="t" x="68" y="770" font-size="11" font-weight="500">Leaderboard page</text>
-<text class="t muted" x="68" y="782" font-size="9.5">CloudFront + S3</text>
+<rect class="card" x="56" y="838" width="176" height="32" rx="7"/>
+<text class="t" x="68" y="852" font-size="11" font-weight="500">Leaderboard page</text>
+<text class="t muted" x="68" y="864" font-size="9.5">CloudFront + S3</text>
 
-<rect class="card" x="290" y="756" width="222" height="32" rx="7"/>
-<text class="t" x="302" y="770" font-size="11" font-weight="500">Filtered Atom feed</text>
-<text class="t muted" x="302" y="782" font-size="9.5">/feed.xml · topic + RQS filters</text>
+<rect class="accent" x="244" y="838" width="176" height="32" rx="7"/>
+<text class="t" x="256" y="852" font-size="11" font-weight="500">Review portal</text>
+<text class="t muted" x="256" y="864" font-size="9.5">ranked fixes, priced in points</text>
 
-<rect class="accent" x="524" y="756" width="222" height="32" rx="7"/>
-<text class="t" x="536" y="770" font-size="11" font-weight="500">MCP server</text>
-<text class="t muted" x="536" y="782" font-size="9.5">AgentCore · Quick Suite, Claude, any client</text>
+<rect class="card" x="432" y="838" width="176" height="32" rx="7"/>
+<text class="t" x="444" y="852" font-size="11" font-weight="500">Filtered Atom feed</text>
+<text class="t muted" x="444" y="864" font-size="9.5">/feed.xml · topic + RQS</text>
 
-<rect class="card" x="758" y="756" width="226" height="32" rx="7"/>
-<text class="t" x="770" y="770" font-size="11" font-weight="500">Chrome extension</text>
-<text class="t muted" x="770" y="782" font-size="9.5">badges on builder.aws.com, site untouched</text>
+<rect class="accent" x="620" y="838" width="176" height="32" rx="7"/>
+<text class="t" x="632" y="852" font-size="11" font-weight="500">MCP server</text>
+<text class="t muted" x="632" y="864" font-size="9.5">AgentCore · 9 tools · any client</text>
+
+<rect class="card" x="808" y="838" width="176" height="32" rx="7"/>
+<text class="t" x="820" y="852" font-size="11" font-weight="500">Chrome extension</text>
+<text class="t muted" x="820" y="864" font-size="9.5">badges, site untouched</text>
 
 </svg>

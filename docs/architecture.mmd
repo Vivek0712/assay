@@ -1,4 +1,4 @@
-%% ShouldIRead architecture (mermaid source; docs/architecture.svg is the rendered version)
+%% Assay architecture (mermaid source; docs/architecture.svg is the rendered version)
 flowchart TB
 
   subgraph DISCOVERY["1 · Discovery — builder.aws.com, public, no auth"]
@@ -8,33 +8,34 @@ flowchart TB
   end
 
   subgraph INGEST["2 · Ingest"]
-    EB["EventBridge<br/>rate(1 hour)"] --> IL["Ingest Lambda<br/>diff vs scored"]
-    IL --> S3[("S3<br/>raw markdown")]
-    IL --> SL["Score Lambda<br/>async · batches of 10"]
+    EB["EventBridge<br/>rate(1 hour)"] --> IL["Ingest Lambda<br/>diff vs already scored"]
+    IL --> S3[("S3<br/>raw markdown · 90-day lifecycle")]
+    IL --> SL["Score Lambda<br/>15 latest · rolling 3-day window"]
   end
 
-  subgraph TOOLS["3a · Deterministic tool belt — exact, model-free"]
-    T1["check_aws_api_names<br/>botocore · 426 services<br/>invented API = never run"]
-    T2["validate_code<br/>ast · bash -n · yaml · node"]
-    T3["verify_links<br/>resolve + classify"]
-    T4["structure_stats<br/>transcripts · headings · units"]
-    T5["cross_post_check<br/>MinHash near-duplicates"]
-    T6["placeholder_density"]
-    T7["engagement_ratio<br/>flags only · never rewards"]
+  subgraph TOOLS["3a · Deterministic tool belt — exact, model-free, runs first"]
+    T1["check_aws_api_names<br/>botocore · 426 service definitions<br/>an API in no SDK was never checked"]
+    T2["aws_footprint<br/>operated vs merely named"]
+    T3["validate_code<br/>ast · bash -n · yaml · node"]
+    T4["verify_links<br/>resolve + classify sources"]
+    T5["structure_stats<br/>transcripts · headings · placeholders"]
+    T6["find_artifacts<br/>repos · packages · demos"]
+    T7["cross_post_check<br/>MinHash near-duplicates"]
+    T8["engagement_ratio<br/>flags only · never rewards"]
   end
 
-  subgraph FLEET["3b · Strands fleet — Bedrock AgentCore Runtime"]
-    TR["TRIAGE · nova-2-lite<br/>cheap gate, classifies type"]
-    TR --> PR["PROVENANCE<br/>did they run it?"]
-    TR --> CD["CODE<br/>substantial?"]
-    TR --> SR["SOURCE<br/>checkable?"]
-    TR --> DP["DEPTH<br/>beyond the docs?"]
-    PR --> CAP
-    CD --> CAP
-    SR --> CAP
-    DP --> CAP
-    CAP["CAPS — measured reality overrides model opinion<br/>no code ⇒ code ≤ 20 · no artefacts ⇒ execution ≤ 25<br/>invented API ⇒ code and sources ≤ 25"]
-    CAP --> RQS["RQS = weighted sum in Python<br/>→ VERDICT writes the one-line reason"]
+  subgraph FLEET["3b · Strands judges — Bedrock AgentCore Runtime"]
+    TR["TRIAGE · nova-2-lite<br/>cheap gate, classifies content type"]
+    TR --> CT["CONTENT · 35<br/>substance · depth · insight<br/>accuracy · scope"]
+    TR --> AW["AWS · 28<br/>service depth · architecture<br/>well-architected · currency · cost"]
+    TR --> EV["EVIDENCE · 22<br/>evidence · sources · code quality"]
+    TR --> RD["READER · 15<br/>clarity · actionability"]
+    CT --> CAP
+    AW --> CAP
+    EV --> CAP
+    RD --> CAP
+    CAP["CAPS — measurement overrides opinion<br/>named but never operated ⇒ AWS depth ≤ 49<br/>API that does not exist ⇒ code ≤ 29 · accuracy ≤ 35"]
+    CAP --> RQS["RQS = weighted sum in Python<br/>+ author credibility (Hero +8 · Amazonian +6 · CB +3)<br/>→ VERDICT writes the one-line reason"]
   end
 
   subgraph STORE["4 · Store"]
@@ -42,10 +43,11 @@ flowchart TB
     PREF[("DynamoDB<br/>reader preferences")]
   end
 
-  subgraph SERVE["5 · Serve — public, cached at the edge"]
+  subgraph SERVE["5 · Serve — one preference filter, five surfaces"]
     PAGE["Leaderboard page<br/>CloudFront + S3"]
+    REV["Review portal<br/>ranked fixes, priced in points"]
     FEED["Filtered Atom feed<br/>/feed.xml"]
-    MCP["MCP server<br/>AgentCore · Quick Suite, Claude"]
+    MCP["MCP server<br/>AgentCore · 9 tools · any client"]
     EXT["Chrome extension<br/>badges on builder.aws.com"]
   end
 
@@ -53,9 +55,10 @@ flowchart TB
   SM --> IL
   API --> IL
   SL --> TOOLS
-  TOOLS -- "MEASURED SIGNALS<br/>judges may interpret, never contradict" --> TR
+  TOOLS -- "MEASURED SIGNALS<br/>judges may interpret, never contradict<br/>15 dimensions · 4 calls · sampled 3×, median" --> TR
   RQS --> DDB
   DDB --> PAGE
+  DDB --> REV
   DDB --> FEED
   DDB --> MCP
   DDB --> EXT
