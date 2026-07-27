@@ -201,7 +201,7 @@ def main(argv: list[str] | None = None) -> int:
     sub = p.add_subparsers(dest="command", required=True)
 
     r = sub.add_parser("run", help="discover, fetch and score a corpus slice")
-    r.add_argument("--days", type=int, default=7)
+    r.add_argument("--days", type=int, default=3)
     r.add_argument("--limit", type=int, default=None)
     r.add_argument("--run", default="latest")
     r.add_argument("--no-links", action="store_true", help="skip network link checks")

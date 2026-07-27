@@ -404,3 +404,56 @@ def test_unlabelled_bracketed_prompt_transcript_is_not_read_as_json():
 def test_unlabelled_real_json_is_still_json():
     rep = validate_code('```\n{"a": 1,,}\n```\n')
     assert rep.failed == 1
+
+
+# ------------------------------------------------------------ aws footprint --
+def test_ordinary_english_is_not_read_as_aws_services():
+    """Regression: `config`, `connect` and `translate` are real service ids and
+    ordinary English. Matching them bare reported three AWS services on a
+    robotics article that mentions none."""
+    from shouldiread.tools import aws_footprint
+
+    fp = aws_footprint("We had to connect the parts, translate the frame and fix the config.")
+    assert fp.services == []
+
+
+def test_prefixed_and_unambiguous_service_names_are_found():
+    from shouldiread.tools import aws_footprint
+
+    fp = aws_footprint("We used Amazon Bedrock, wrote to S3 and an AWS Lambda read it back.")
+    assert set(fp.services) >= {"bedrock", "s3", "lambda"}
+
+
+def test_naming_a_service_is_not_operating_it():
+    """The distinction the pillar exists to draw."""
+    from shouldiread.tools import aws_footprint
+
+    named = aws_footprint("Our pipeline uses Amazon Bedrock for inference.")
+    assert named.services == ["bedrock"]
+    assert named.operated == 0
+    assert named.names_only is True
+
+    operated = aws_footprint(
+        '```python\nimport boto3\nc = boto3.client("bedrock-runtime")\n'
+        'c.converse(modelId="m", messages=[])\n```\n'
+    )
+    assert operated.operated > 0
+    assert operated.names_only is False
+
+
+def test_infrastructure_as_code_counts_as_operating():
+    from shouldiread.tools import aws_footprint
+
+    fp = aws_footprint(
+        "```yaml\nResources:\n  B:\n    Type: AWS::S3::Bucket\n```\n"
+        '```hcl\nresource "aws_lambda_function" "f" {}\n```\n'
+    )
+    assert "AWS::S3::Bucket" in fp.cfn_resources
+    assert "aws_lambda_function" in fp.terraform_resources
+    assert fp.operated >= 2
+
+
+def test_word_boundaries_are_respected():
+    from shouldiread.tools import aws_footprint
+
+    assert aws_footprint("The s3cure protocol and glued joints held.").services == []

@@ -11,7 +11,9 @@ from typing import Any
 
 from .models import Article
 from .tools import (
+    aws_footprint,
     check_aws_api_names,
+    find_artifacts,
     cross_post_check,
     engagement_ratio,
     structure_stats,
@@ -43,6 +45,12 @@ async def analyze(
         author_alias=article.author.alias,
         check_network=check_links,
     )
+    artifacts = find_artifacts(
+        article.markdown,
+        author_alias=article.author.alias,
+        hero_image_url=article.hero_image_url,
+    )
+    footprint = aws_footprint(article.markdown)
     engagement = engagement_ratio(
         likes=article.likes,
         comments=article.comments,
@@ -59,6 +67,8 @@ async def analyze(
         "aws_apis": apis.to_dict(),
         "links": links.to_dict(),
         "duplicates": dupes.to_dict(),
+        "artifacts": artifacts.to_dict(),
+        "aws_footprint": footprint.to_dict(),
         "engagement": engagement.to_dict(),
     }
 
@@ -92,10 +102,14 @@ def heuristic_floor(signals: dict[str, Any]) -> dict[str, Any]:
     # Deliberately excludes `measurements`: quoting "up to 99.99% availability"
     # from a docs page is not evidence of having done anything, and treating it
     # as such let prose-only posts masquerade as hands-on write-ups.
+    art = signals.get("artifacts") or {}
     hard_evidence = (
         s["terminal_evidence"] > 0
         or c["output_blocks"] > 0
         or effective_images >= 2
+        # A linked repository, package or demo is durable, inspectable proof the
+        # work exists - the council's unanimous correction to the first rubric.
+        or bool(art.get("has_durable_artifact"))
     )
 
     reasons: list[str] = []
@@ -133,6 +147,10 @@ def heuristic_floor(signals: dict[str, Any]) -> dict[str, Any]:
         positives.append(f"{l['primary_sources']} primary sources cited")
     if s["measurements"] >= 3:
         positives.append("reports concrete numbers")
+    if art.get("is_authors_own"):
+        positives.append("links the author's own repository")
+    elif art.get("has_durable_artifact"):
+        positives.append("links a working repository, package or demo")
     if a["total_checked"] >= 3 and a["total_invalid"] == 0:
         positives.append(f"{a['total_checked']} AWS API references all valid")
 

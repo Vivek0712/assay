@@ -33,13 +33,20 @@ def signals(**over):
         "duplicates": {"is_cross_post": False, "has_foreign_duplicate": False,
                        "max_similarity": 0.0},
         "engagement": {"suspicious": False, "reason": ""},
+        "artifacts": {"has_durable_artifact": False, "is_authors_own": False, "total": 0},
+        "aws_footprint": {
+            "services": ["s3", "lambda"], "services_in_code": ["s3"],
+            "operations_invoked": 4, "cfn_resources": [], "terraform_resources": [],
+            "uses_cdk": False, "arns": 2, "iam_statements": 1,
+            "quota_mentions": 2, "operated": 7, "names_only": False,
+        },
     }
     for section, values in over.items():
         base[section] = {**base[section], **values}
     return base
 
 
-ALL_HIGH = {k: 90.0 for k in WEIGHTS}
+ALL_HIGH = {k: 90.0 for k in WEIGHTS}  # includes aws_depth
 
 
 # ------------------------------------------------------------------ rqs ---
@@ -48,13 +55,6 @@ def test_rqs_is_weighted_mean():
     assert compute_rqs({k: 0.0 for k in WEIGHTS}) == pytest.approx(0.0)
     assert compute_rqs({k: 50.0 for k in WEIGHTS}) == pytest.approx(50.0)
 
-
-def test_execution_evidence_carries_the_most_weight():
-    """The premise of the whole project: doing the work matters most."""
-    assert WEIGHTS["execution_evidence"] == max(WEIGHTS.values())
-    only_exec = {k: (100.0 if k == "execution_evidence" else 0.0) for k in WEIGHTS}
-    only_orig = {k: (100.0 if k == "originality" else 0.0) for k in WEIGHTS}
-    assert compute_rqs(only_exec) > compute_rqs(only_orig)
 
 
 def test_verdict_thresholds():
@@ -65,49 +65,11 @@ def test_verdict_thresholds():
 
 
 # ----------------------------------------------------------------- caps ---
-def test_code_score_capped_without_code():
-    capped, notes = apply_caps(ALL_HIGH, signals(structure={"code_blocks": 0}), "tutorial")
-    assert capped["code_substance"] <= 20
-    assert any("no code blocks" in n for n in notes)
 
 
-def test_code_cap_relaxed_for_opinion_pieces():
-    """An opinion piece is not a failed tutorial."""
-    capped, _ = apply_caps(ALL_HIGH, signals(structure={"code_blocks": 0}), "opinion")
-    assert capped["code_substance"] == 55
 
 
-def test_execution_score_capped_without_artefacts():
-    s = signals(structure={"terminal_evidence": 0, "images": 0, "measurements": 0},
-                code={"output_blocks": 0})
-    capped, _ = apply_caps(ALL_HIGH, s, "tutorial")
-    assert capped["execution_evidence"] <= 25
 
-
-def test_execution_score_survives_with_terminal_output():
-    s = signals(code={"output_blocks": 5}, structure={"terminal_evidence": 5})
-    capped, _ = apply_caps(ALL_HIGH, s, "tutorial")
-    assert capped["execution_evidence"] == 90
-
-
-def test_invented_api_caps_code_and_sources():
-    """An API that does not exist is disqualifying for both dimensions."""
-    s = signals(aws_apis={"total_invalid": 2, "invalid_calls": ["s3.turbo_upload_object"]})
-    capped, notes = apply_caps(ALL_HIGH, s, "tutorial")
-    assert capped["code_substance"] <= 25
-    assert capped["source_integrity"] <= 25
-    assert any("do not exist" in n for n in notes)
-
-
-def test_zero_links_caps_sources():
-    capped, _ = apply_caps(ALL_HIGH, signals(structure={"links": 0}), "tutorial")
-    assert capped["source_integrity"] <= 30
-
-
-def test_foreign_duplicate_destroys_originality():
-    s = signals(duplicates={"has_foreign_duplicate": True, "max_similarity": 0.95})
-    capped, _ = apply_caps(ALL_HIGH, s, "tutorial")
-    assert capped["originality"] <= 10
 
 
 def test_clean_article_is_not_capped():
@@ -373,19 +335,6 @@ def test_median_field_falls_back_when_every_sample_failed():
     assert _median_field([], "score", 40.0) == 40.0
 
 
-def test_provenance_prompt_has_anchored_score_bands():
-    """Unanchored, the provenance judge disagreed with itself by 40-80 points on
-    identical input. Explicit bands took the whole-article spread from 32 to 1.5."""
-    from shouldiread.agents import prompts
-
-    text = prompts.PROVENANCE
-    assert "SCORE BANDS" in text
-    for band in ("85-100", "70-84", "50-69", "30-49", "10-29", "0-9"):
-        assert band in text, band
-    # The bands must be tied to the measured counts, not to impressions.
-    assert "MEASURED SIGNALS" in text
-    assert "cannot be above 29" in text
-
 
 def test_sampling_is_configurable_and_at_least_one():
     from shouldiread.agents.fleet import JUDGE_SAMPLES
@@ -407,37 +356,6 @@ def scored(caps=None, raw=None, dims=None, rqs=40.0, verdict="SKIM", positives=N
     }
 
 
-def test_cap_cost_is_exact_arithmetic():
-    """A cap holding sources at 30 when the judge wanted 85 costs exactly
-    (85-30) * 20/100 = 11.0 RQS. Not an estimate."""
-    from shouldiread.advise import recommend
-
-    out = recommend(scored(
-        caps=["source_integrity capped at 30: no outbound sources at all"],
-        raw={"source_integrity": 85.0},
-        dims={"source_integrity": 30.0},
-    ))
-    rec = next(r for r in out["recommendations"] if r["dimension"] == "source_integrity")
-    assert rec["certainty"] == "exact"
-    assert rec["gain"] == 11.0
-
-
-def test_recommendations_are_ranked_by_value():
-    from shouldiread.advise import recommend
-
-    out = recommend(scored(
-        caps=[
-            "source_integrity capped at 30: no outbound sources at all",
-            "execution_evidence capped at 25: no terminal output, screenshots or measurements",
-        ],
-        raw={"source_integrity": 50.0, "execution_evidence": 90.0},
-        dims={"source_integrity": 30.0, "execution_evidence": 25.0},
-    ))
-    gains = [r["gain"] for r in out["recommendations"]]
-    assert gains == sorted(gains, reverse=True)
-    # execution evidence is weighted 30 and is 65 points below where the judge
-    # put it, so it must outrank the sources fix.
-    assert out["recommendations"][0]["dimension"] == "execution_evidence"
 
 
 def test_every_cap_message_has_matching_advice():
@@ -455,31 +373,6 @@ def test_every_cap_message_has_matching_advice():
         assert any(fragment in message for fragment, *_ in CAP_ADVICE), message
 
 
-def test_reachable_score_and_next_band_are_reported():
-    from shouldiread.advise import recommend
-
-    out = recommend(scored(
-        rqs=32.0, verdict="SKIP",
-        caps=["source_integrity capped at 30: no outbound sources at all"],
-        raw={"source_integrity": 80.0},
-        dims={"source_integrity": 30.0},
-    ))
-    assert out["points_to_next_band"]["band"] == "SKIM"
-    assert out["points_to_next_band"]["points"] == 8.0
-    assert out["reachable_rqs"] > out["rqs"]
-
-
-def test_a_strong_article_gets_no_busywork():
-    from shouldiread.advise import recommend
-
-    out = recommend(scored(
-        rqs=88.0, verdict="READ",
-        dims={k: 90.0 for k in ("execution_evidence", "code_substance",
-                                "source_integrity", "depth", "originality")},
-        positives=["8 pasted terminal session(s)"],
-    ))
-    assert out["recommendations"] == []
-    assert "good shape" in __import__("shouldiread.advise", fromlist=["render_text"]).render_text(out)
 
 
 def test_articles_that_never_reached_a_judge_still_get_advice():
@@ -555,7 +448,6 @@ def test_export_corpus_returns_full_records_not_the_compact_form():
 def test_build_page_accepts_scores_from_mcp():
     """build_page must render from injected records so the publish step can feed
     it MCP output instead of reading the store directly."""
-    from shouldiread.publish import build_page
 
     rows = [
         score_row(article_id="1", verdict="READ", title="From MCP", author_alias="alice"),
@@ -578,3 +470,131 @@ def tmp_path_page(rows):
         target = Path(d) / "index.html"
         build_page(output=str(target), scores=rows)
         return target.read_text()
+
+
+
+def test_adviser_survives_an_unknown_dimension():
+    from shouldiread.advise import recommend
+
+    out = recommend({
+        "rqs": 50.0, "verdict": "SKIM", "headline": "h",
+        "dimensions": [{"name": "some_future_pillar", "score": 10.0,
+                        "rationale": "", "evidence": []}],
+        "signals": {"caps_applied": [], "raw_dimension_scores": {}},
+    })
+    assert isinstance(out["recommendations"], list)
+
+
+# =========================================================================
+# The reworked rubric: "is this worth my time?", not "prove you ran it".
+# =========================================================================
+
+
+
+
+
+
+
+
+
+def test_prompts_tell_judges_to_calibrate_by_content_type():
+    from shouldiread.agents import prompts
+
+    flat = " ".join(prompts.SHARED_RULES.split())
+    assert "what it is TRYING to be" in flat
+    assert "no code, no terminal output and no" in flat
+
+
+
+
+# =========================================================================
+# Fifteen dimensions, four judges.
+# =========================================================================
+def test_fifteen_dimensions_grouped_into_four_families():
+    from shouldiread.config import DIMENSION_FAMILIES, WEIGHTS
+
+    assert len(WEIGHTS) == 15
+    assert sum(WEIGHTS.values()) == 100
+    assert len(DIMENSION_FAMILIES) == 4
+    covered = {d for dims in DIMENSION_FAMILIES.values() for d in dims}
+    assert covered == set(WEIGHTS), "every dimension must belong to exactly one family"
+    assert sum(len(v) for v in DIMENSION_FAMILIES.values()) == 15, "no dimension twice"
+
+
+def test_granularity_costs_no_extra_model_calls():
+    """Fifteen dimensions, but one judge per family - the schemas carry the rest."""
+    from shouldiread.agents import AwsResult, ContentResult, EvidenceResult, ReaderResult
+    from shouldiread.config import DIMENSION_FAMILIES
+
+    schemas = {
+        "content": ContentResult, "aws": AwsResult,
+        "evidence": EvidenceResult, "reader": ReaderResult,
+    }
+    for family, dimensions in DIMENSION_FAMILIES.items():
+        fields = schemas[family].model_fields
+        for dimension in dimensions:
+            assert dimension in fields, f"{family} judge cannot return {dimension}"
+
+
+def test_every_dimension_has_a_label_and_advice():
+    import inspect
+
+    from shouldiread.advise import DIMENSION_LABELS, _headroom_recommendations
+    from shouldiread.config import WEIGHTS
+
+    source = inspect.getsource(_headroom_recommendations)
+    for dimension in WEIGHTS:
+        assert dimension in DIMENSION_LABELS, f"no label for {dimension}"
+        assert f'"{dimension}"' in source, f"no headroom advice for {dimension}"
+
+
+def test_aws_family_carries_the_platform_specific_dimensions():
+    """These are what make it an AWS rubric rather than a generic blog rubric."""
+    from shouldiread.config import DIMENSION_FAMILIES
+
+    aws = set(DIMENSION_FAMILIES["aws"])
+    assert {"aws_service_depth", "architecture_quality", "well_architected",
+            "currency", "cost_awareness"} == aws
+
+
+def test_no_code_does_not_penalise_a_codeless_piece():
+    capped, notes = apply_caps(
+        ALL_HIGH,
+        signals(structure={"code_blocks": 0, "code_loc": 0, "words": 900, "measurements": 4}),
+        "explainer",
+    )
+    assert capped["substance"] == 90
+    assert capped["insight"] == 90
+    assert not any("code_quality" in n for n in notes)
+
+
+def test_nonexistent_apis_hit_code_quality_and_accuracy():
+    capped, _ = apply_caps(
+        ALL_HIGH, signals(aws_apis={"total_invalid": 2}), "tutorial"
+    )
+    assert capped["code_quality"] <= 29
+    assert capped["accuracy"] <= 35
+    assert capped["currency"] <= 40
+
+
+def test_sourcing_demanded_by_content_type_only():
+    no_links = signals(structure={"links": 0})
+    opinion, _ = apply_caps(ALL_HIGH, no_links, "opinion")
+    reference, _ = apply_caps(ALL_HIGH, no_links, "reference")
+    assert opinion["sources"] == 90
+    assert reference["sources"] <= 50
+
+
+def test_every_family_prompt_has_bands_for_each_of_its_dimensions():
+    from shouldiread.agents import prompts
+    from shouldiread.config import DIMENSION_FAMILIES
+
+    prompt_for = {
+        "content": prompts.CONTENT, "aws": prompts.AWS,
+        "evidence": prompts.EVIDENCE, "reader": prompts.READER,
+    }
+    for family, dimensions in DIMENSION_FAMILIES.items():
+        text = prompt_for[family]
+        for dimension in dimensions:
+            assert f"**{dimension}**" in text, f"{family} prompt does not define {dimension}"
+        assert "85-100" in text and "0-9" in text, f"{family} prompt lacks anchored bands"

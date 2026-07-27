@@ -111,7 +111,7 @@ async def score_articles(
 
 async def run_corpus(
     *,
-    days: int = 7,
+    days: int = 3,
     limit: int | None = None,
     run: str = "latest",
     check_links: bool = True,

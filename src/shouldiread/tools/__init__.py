@@ -5,6 +5,8 @@ Everything in this package is exact and model-free. The agents in
 verdict traces back to a measurement rather than to a model's impression.
 """
 
+from .artifacts import ArtifactReport, find_artifacts
+from .aws_footprint import AwsFootprint, aws_footprint
 from .aws_api import ApiCheck, check_aws_api_names, known_services, service_index
 from .code_validation import CodeReport, validate_code
 from .dedup import DuplicateIndex, DuplicateReport, cross_post_check, minhash, similarity
@@ -21,6 +23,8 @@ from .markdown_tools import (
 
 __all__ = [
     "ApiCheck",
+    "ArtifactReport",
+    "AwsFootprint",
     "CodeBlock",
     "CodeReport",
     "DuplicateIndex",
@@ -29,6 +33,8 @@ __all__ = [
     "LinkReport",
     "MarkdownStats",
     "check_aws_api_names",
+    "aws_footprint",
+    "find_artifacts",
     "classify_host",
     "cross_post_check",
     "engagement_ratio",

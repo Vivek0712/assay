@@ -33,6 +33,7 @@ from strands.models import BedrockModel
 
 from ..analyze import analyze, heuristic_floor
 from ..config import (
+    DIMENSION_FAMILIES,
     AWS_PROFILE,
     AWS_REGION,
     MODEL_JUDGE,
@@ -45,11 +46,11 @@ from ..models import Article, Dimension, Evidence, Score
 from ..tools.dedup import DuplicateIndex
 from . import prompts
 from .schemas import (
-    CodeResult,
-    DepthResult,
+    AwsResult,
+    ContentResult,
+    EvidenceResult,
     FinalVerdict,
-    ProvenanceResult,
-    SourceResult,
+    ReaderResult,
     TriageResult,
 )
 
@@ -70,6 +71,12 @@ JUDGE_RETRIES = 3
 # verdict flipped between SKIM and READ. Temperature is already 0; Bedrock does
 # not promise determinism, and a single sample is simply not a measurement.
 # Median of three costs roughly 2.5x and removes most of it.
+# Three. Bundling several dimensions into one judge call splits the model's
+# attention and reintroduces per-dimension disagreement the bands alone do not
+# remove - up to 40 points on aws_service_depth before the median. Five samples
+# were tried and abandoned: the across-run spread was already within 15 points
+# at three, the whole-article RQS within ~3, and five put 100 calls in flight
+# per batch without moving either number enough to justify the wait.
 JUDGE_SAMPLES = int(os.environ.get("SIR_JUDGE_SAMPLES", "3"))
 
 # Failures caused by load rather than by the request. Everything else is a real
@@ -179,6 +186,40 @@ def _signal_block(article: Article, signals: dict[str, Any]) -> str:
             f"  ?  unrecognised API-looking names (low confidence, verify yourself): "
             f"{a['suspect_api_names'][:8]}"
         )
+    fp = signals.get("aws_footprint") or {}
+    if fp.get("services"):
+        lines.append(
+            f"  AWS services referenced: {fp['services']} "
+            f"(in code: {fp.get('services_in_code') or 'none'})"
+        )
+        lines.append(
+            f"  AWS operations invoked: {fp.get('operations_invoked', 0)}; "
+            f"CloudFormation resources: {len(fp.get('cfn_resources') or [])}; "
+            f"Terraform resources: {len(fp.get('terraform_resources') or [])}; "
+            f"CDK: {fp.get('uses_cdk')}; ARNs: {fp.get('arns', 0)}; "
+            f"IAM statements: {fp.get('iam_statements', 0)}; "
+            f"quota/limit mentions: {fp.get('quota_mentions', 0)}"
+        )
+        if fp.get("names_only"):
+            lines.append("  !! services are NAMED but nothing is configured or invoked")
+    else:
+        lines.append("  AWS services referenced: none")
+
+    art = signals.get("artifacts") or {}
+    if art.get("total"):
+        bits = []
+        if art.get("repos"):
+            own = " (the author's own)" if art.get("is_authors_own") else ""
+            bits.append(f"{len(art['repos'])} linked repository/ies{own}")
+        if art.get("packages"):
+            bits.append(f"{len(art['packages'])} published package(s)")
+        if art.get("demos"):
+            bits.append(f"{len(art['demos'])} demo/video link(s)")
+        if art.get("diagrams"):
+            bits.append(f"{art['diagrams']} diagram(s)")
+        if art.get("hero_image"):
+            bits.append("hero image")
+        lines.append(f"  durable artefacts: {', '.join(bits)}")
     if d["is_cross_post"]:
         lines.append(f"  cross-posted from: {d['canonical_host']} (declared, not a problem in itself)")
     if d["has_foreign_duplicate"]:
@@ -225,59 +266,60 @@ def _code_block_text(article: Article) -> str:
 # --------------------------------------------------------------------------
 # caps: measured reality beats model opinion
 # --------------------------------------------------------------------------
-def apply_caps(dims: dict[str, float], signals: dict[str, Any], content_type: str) -> tuple[dict[str, float], list[str]]:
-    """Clamp dimension scores that the measurements cannot support."""
-    s, c, a = signals["structure"], signals["code"], signals["aws_apis"]
-    l, d = signals["links"], signals["duplicates"]
+def apply_caps(
+    dims: dict[str, float], signals: dict[str, Any], content_type: str
+) -> tuple[dict[str, float], list[str]]:
+    """Clamp dimensions the measurements cannot support.
+
+    Deliberately light. Caps exist to stop a judge awarding points for something
+    demonstrably absent - not to enforce a house style. An article with no code
+    is not automatically worse; one claiming APIs that do not exist is.
+    """
+    s_, c, a = signals["structure"], signals["code"], signals["aws_apis"]
+    l = signals["links"]
+    fp = signals.get("aws_footprint") or {}
     capped = dict(dims)
     notes: list[str] = []
 
     def cap(dim: str, ceiling: float, why: str) -> None:
-        if capped[dim] > ceiling:
+        if dim in capped and capped[dim] > ceiling:
             capped[dim] = ceiling
             notes.append(f"{dim} capped at {ceiling:.0f}: {why}")
 
-    # Execution evidence must be evidenced.
-    if s["terminal_evidence"] == 0 and c["output_blocks"] == 0 and s["images"] == 0:
-        if s["measurements"] < 3:
-            cap("execution_evidence", 25, "no terminal output, screenshots or measurements")
-        else:
-            cap("execution_evidence", 45, "numbers quoted but no output, screenshots or transcripts")
+    # --- content ---------------------------------------------------------
+    if s_["words"] < 250:
+        cap("substance", 40, "too short to carry much")
+        cap("insight", 40, "too short to develop anything")
+        cap("explanation_depth", 45, "too short to explain a mechanism")
+    if s_["words"] > 1200 and s_["code_blocks"] == 0 and s_["measurements"] < 2:
+        cap("substance", 55, "long-form with no code, no numbers and no specifics")
 
-    # Code substance requires code. Content types where code is not expected are
-    # exempt: an opinion piece is not a failed tutorial.
-    code_optional = content_type in {"news", "opinion", "announcement", "certification_journey"}
-    if s["code_blocks"] == 0 and not code_optional:
-        cap("code_substance", 20, "no code blocks in a piece that calls for them")
-    elif s["code_blocks"] == 0 and code_optional:
-        cap("code_substance", 55, "no code, but not the kind of article that needs it")
-    if c["checked"] and c["pass_rate"] < 0.5:
-        cap("code_substance", 40, "most code blocks do not parse")
-    if s["placeholder_density"] > 30:
-        cap("code_substance", 50, "code is largely placeholders")
-
-    # An invented API is disqualifying for both code and sources.
+    # --- AWS -------------------------------------------------------------
+    if not fp.get("services"):
+        cap("aws_service_depth", 10, "no AWS service referenced at all")
+    elif fp.get("names_only") and s_["measurements"] < 3:
+        cap("aws_service_depth", 49, "services named, but nothing configured, invoked or measured")
     if a["total_invalid"] > 0:
-        cap("code_substance", 25, f"{a['total_invalid']} AWS API reference(s) do not exist")
-        cap("source_integrity", 25, "cites AWS APIs that do not exist")
+        cap("currency", 40, "references AWS APIs that do not exist")
 
-    # Sources.
-    if s["links"] == 0:
-        cap("source_integrity", 30, "no outbound sources at all")
-    elif l["primary_sources"] == 0:
-        cap("source_integrity", 55, "no primary sources cited")
+    # --- evidence: the one hard disqualifier -----------------------------
+    if a["total_invalid"] > 0:
+        cap("code_quality", 29,
+            f"{a['total_invalid']} AWS API reference(s) do not exist in any SDK")
+        cap("accuracy", 35, "cites AWS operations that do not exist")
+    if c["checked"] and c["pass_rate"] < 0.5:
+        cap("code_quality", 45, "most code blocks do not parse")
+    if s_["placeholder_density"] > 30:
+        cap("code_quality", 55, "code is largely placeholders")
     if l["checked"] and l["dead_ratio"] > 0.4:
-        cap("source_integrity", 40, "most links are dead")
+        cap("sources", 45, "most outbound links are dead")
+    # Only demand sourcing where the piece makes factual claims to support.
+    if s_["links"] == 0 and content_type in {"tutorial", "deep_dive", "reference", "news"}:
+        cap("sources", 50, "no outbound sources in a piece making factual claims")
 
-    # Originality.
-    if d["has_foreign_duplicate"]:
-        cap("originality", 10, "near-duplicate of another author's article")
-    if s["bold_pseudo_headings"] > 3 and s["atx_headings"] == 0:
-        cap("originality", 55, "bold-text pseudo-headings throughout")
-
-    # Depth has a length floor: you cannot go deep in 300 words.
-    if s["words"] < 300:
-        cap("depth", 35, "too short to develop anything")
+    # --- reader ----------------------------------------------------------
+    if s_["bold_pseudo_headings"] > 3 and s_["atx_headings"] == 0:
+        cap("clarity", 65, "bold-text pseudo-headings instead of real structure")
 
     return capped, notes
 
@@ -410,100 +452,102 @@ class ScoringFleet:
 
         # --- deep review: four judges, concurrently ---
         article_text = _article_block(article)
-        prov_s, code_s, source_s, depth_s = await asyncio.gather(
+        content_s, aws_s, evidence_s, reader_s = await asyncio.gather(
             self._ask_many(
-                prompts.PROVENANCE, ProvenanceResult,
-                f"{signal_text}\n\n{article_text}", "provenance",
+                prompts.CONTENT, ContentResult,
+                f"{signal_text}\n\n{article_text}", "content",
             ),
             self._ask_many(
-                prompts.CODE, CodeResult,
-                f"{signal_text}\n\nTITLE: {article.title}\n\n"
+                prompts.AWS, AwsResult,
+                f"{signal_text}\n\n{article_text}", "aws",
+            ),
+            self._ask_many(
+                prompts.EVIDENCE, EvidenceResult,
+                f"{signal_text}\n\n{article_text}\n\n"
                 f"CODE BLOCKS:\n{_code_block_text(article)}",
-                "code",
+                "evidence",
             ),
             self._ask_many(
-                prompts.SOURCE, SourceResult,
-                f"{signal_text}\n\n{article_text}", "source",
-            ),
-            self._ask_many(
-                prompts.DEPTH, DepthResult,
-                f"{signal_text}\n\n{article_text}", "depth",
+                prompts.READER, ReaderResult,
+                f"{signal_text}\n\n{article_text}", "reader",
             ),
         )
 
-        # Scores are per-dimension medians; the prose comes from whichever
-        # sample landed closest to that median.
-        prov = _representative(prov_s, "score")
-        code = _representative(code_s, "score")
-        source = _representative(source_s, "score")
-        depth = _representative(depth_s, "depth_score")
+        # Each family judge returns several dimensions in one response; take the
+        # median per dimension across samples, exactly as before.
+        families = {
+            "content": content_s, "aws": aws_s,
+            "evidence": evidence_s, "reader": reader_s,
+        }
+        raw: dict[str, float] = {}
+        sample_spread: dict[str, float] = {}
+        for family, dimensions in DIMENSION_FAMILIES.items():
+            samples = families[family]
+            for dimension in dimensions:
+                raw[dimension] = _median_field(samples, dimension, 40.0)
+                sample_spread[dimension] = _spread(samples, dimension)
 
-        raw = {
-            "execution_evidence": _median_field(prov_s, "score", 40.0),
-            "code_substance": _median_field(code_s, "score", 40.0),
-            "source_integrity": _median_field(source_s, "score", 40.0),
-            "depth": _median_field(depth_s, "depth_score", 40.0),
-            "originality": _median_field(depth_s, "originality_score", 40.0),
-        }
-        sample_spread = {
-            "execution_evidence": _spread(prov_s, "score"),
-            "code_substance": _spread(code_s, "score"),
-            "source_integrity": _spread(source_s, "score"),
-            "depth": _spread(depth_s, "depth_score"),
-            "originality": _spread(depth_s, "originality_score"),
-        }
+        content = _representative(content_s, "substance")
+        aws = _representative(aws_s, "aws_service_depth")
+        evidence = _representative(evidence_s, "evidence")
+        reader = _representative(reader_s, "clarity")
         capped, cap_notes = apply_caps(raw, signals, content_type)
         base_rqs = compute_rqs(capped)
         bonus = author_bonus(article.author.kind, base_rqs)
         rqs = min(100.0, base_rqs + bonus)
 
+        def _ev(tool: str, items, hint: str, prefix: str = "") -> list[Evidence]:
+            return [
+                Evidence(tool, f"{prefix}{x}", weight_hint=hint) for x in (items or [])[:4]
+            ]
+
+        # Family-level observations hang off the dimension they most speak to, so
+        # the breakdown stays readable rather than repeating the same notes five
+        # times.
+        family_evidence: dict[str, list[Evidence]] = {
+            "substance": (
+                _ev("content", content.specifics, "positive")
+                + _ev("content", content.padding, "negative", "padding: ")
+            ) if content else [],
+            "insight": (
+                [Evidence("content", f"new to reader: {content.what_is_new}")]
+            ) if content else [],
+            "accuracy": _ev("content", content.errors, "negative", "error: ") if content else [],
+            "aws_service_depth": (
+                _ev("aws", aws.operating_detail, "positive", "operates: ")
+                + _ev("aws", aws.named_only, "negative", "named only: ")
+            ) if aws else [],
+            "currency": _ev("aws", aws.dated_or_wrong, "negative", "dated: ") if aws else [],
+            "evidence": (
+                _ev("evidence", evidence.supported_by, "positive")
+                + _ev("evidence", evidence.unsupported_claims, "negative", "unsupported: ")
+            ) if evidence else [],
+            "clarity": (
+                _ev("reader", reader.strengths, "positive")
+                + _ev("reader", reader.obstacles, "negative", "obstacle: ")
+            ) if reader else [],
+            "actionability": (
+                [Evidence("reader", f"next step: {reader.next_step}")]
+            ) if reader else [],
+        }
+        family_rationale = {
+            "content": content.rationale if content else "judge unavailable",
+            "aws": aws.rationale if aws else "judge unavailable",
+            "evidence": evidence.rationale if evidence else "judge unavailable",
+            "reader": reader.rationale if reader else "judge unavailable",
+        }
+        dimension_family = {
+            d: f for f, dims in DIMENSION_FAMILIES.items() for d in dims
+        }
+
         dimensions = [
             Dimension(
-                name="execution_evidence",
-                score=capped["execution_evidence"],
-                rationale=prov.rationale if prov else "judge unavailable",
-                evidence=(
-                    [Evidence("provenance", e, weight_hint="positive") for e in prov.evidence[:5]]
-                    + [Evidence("provenance", m, weight_hint="negative") for m in prov.missing[:5]]
-                )
-                if prov
-                else [],
-            ),
-            Dimension(
-                name="code_substance",
-                score=capped["code_substance"],
-                rationale=code.rationale if code else "judge unavailable",
-                evidence=[Evidence("code", i, weight_hint="negative") for i in code.issues[:5]]
-                if code
-                else [],
-            ),
-            Dimension(
-                name="source_integrity",
-                score=capped["source_integrity"],
-                rationale=source.rationale if source else "judge unavailable",
-                evidence=[
-                    Evidence("source", c, weight_hint="negative")
-                    for c in source.unsupported_claims[:5]
-                ]
-                if source
-                else [],
-            ),
-            Dimension(
-                name="depth",
-                score=capped["depth"],
-                rationale=depth.rationale if depth else "judge unavailable",
-                evidence=[Evidence("depth", f"new to reader: {depth.what_is_new}")] if depth else [],
-            ),
-            Dimension(
-                name="originality",
-                score=capped["originality"],
-                rationale=depth.rationale if depth else "judge unavailable",
-                evidence=[
-                    Evidence("depth", g, weight_hint="negative") for g in depth.generic_markers[:5]
-                ]
-                if depth
-                else [],
-            ),
+                name=name,
+                score=capped[name],
+                rationale=family_rationale[dimension_family[name]],
+                evidence=family_evidence.get(name, []),
+            )
+            for name in WEIGHTS
         ]
 
         verdict_text = verdict_for(rqs)

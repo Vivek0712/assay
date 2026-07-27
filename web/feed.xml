@@ -3,124 +3,70 @@
   <id>urn:shouldiread:feed</id>
   <title>ShouldIRead - AWS Builder Center, worth-reading only</title>
   <subtitle>RQS &gt;= 70, all topics. Scored on execution evidence, not engagement.</subtitle>
-  <updated>2026-07-27T17:03:58.256663+00:00</updated>
+  <updated>2026-07-27T19:54:03.743411+00:00</updated>
   <link rel="alternate" href="https://builder.aws.com"/>
   <generator>shouldiread</generator>
   <entry>
-    <id>https://builder.aws.com/content/3FtOI9H152rOXVRvdRXJdztqC3G/best-practices-for-extending-striped-lvm-storage-in-sap-hana-on-aws</id>
-    <title type="html">Best Practices for Extending Striped LVM Storage in SAP HANA on AWS</title>
-    <link rel="alternate" href="https://builder.aws.com/content/3FtOI9H152rOXVRvdRXJdztqC3G/best-practices-for-extending-striped-lvm-storage-in-sap-hana-on-aws"/>
-    <updated>2026-07-26T05:49:15.731000+00:00</updated>
-    <author><name>pmehulk</name></author>
-    <category term="sap"/><category term="amazon-ec2"/>
-    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 88/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Nine terminal sessions show actual SAP HANA LVM extension.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 95/100&lt;/li&gt;&lt;li&gt;code substance: 80/100&lt;/li&gt;&lt;li&gt;source integrity: 85/100&lt;/li&gt;&lt;li&gt;depth: 70/100&lt;/li&gt;&lt;li&gt;originality: 60/100&lt;/li&gt;&lt;/ul&gt;</summary>
+    <id>https://builder.aws.com/content/3GsfcvUktVjR6B6sXTHjnczIgZH/your-model-isnt-on-bedrock-yet-heres-how-to-self-host-it-on-aws-today</id>
+    <title type="html">Your Model Isn't on Bedrock Yet. Here's How to Self-Host It on AWS Today</title>
+    <link rel="alternate" href="https://builder.aws.com/content/3GsfcvUktVjR6B6sXTHjnczIgZH/your-model-isnt-on-bedrock-yet-heres-how-to-self-host-it-on-aws-today"/>
+    <updated>2026-07-27T18:53:51.765000+00:00</updated>
+    <author><name>tanishmh</name></author>
+    <category term="amazon-sagemaker"/><category term="amazon-ec2"/><category term="generative-ai"/><category term="open-source"/><category term="machine-learning"/>
+    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 90/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Comprehensive guide for self-hosting open-source models on AWS using multiple services.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;substance: 85/100&lt;/li&gt;&lt;li&gt;explanation depth: 85/100&lt;/li&gt;&lt;li&gt;insight: 70/100&lt;/li&gt;&lt;li&gt;accuracy: 85/100&lt;/li&gt;&lt;li&gt;scope discipline: 85/100&lt;/li&gt;&lt;li&gt;aws service depth: 85/100&lt;/li&gt;&lt;li&gt;architecture quality: 85/100&lt;/li&gt;&lt;li&gt;well architected: 85/100&lt;/li&gt;&lt;li&gt;currency: 85/100&lt;/li&gt;&lt;li&gt;cost awareness: 80/100&lt;/li&gt;&lt;li&gt;evidence: 85/100&lt;/li&gt;&lt;li&gt;sources: 85/100&lt;/li&gt;&lt;li&gt;code quality: 85/100&lt;/li&gt;&lt;li&gt;clarity: 90/100&lt;/li&gt;&lt;li&gt;actionability: 85/100&lt;/li&gt;&lt;/ul&gt;</summary>
   </entry>
   <entry>
-    <id>https://builder.aws.com/content/3GiDIJOUJisKlnRDzjvllUwI1bO/what-happens-behind-the-eks-one-click-cluster-access-button</id>
-    <title type="html">What Happens Behind the EKS One-Click Cluster Access Button?</title>
-    <link rel="alternate" href="https://builder.aws.com/content/3GiDIJOUJisKlnRDzjvllUwI1bO/what-happens-behind-the-eks-one-click-cluster-access-button"/>
-    <updated>2026-07-21T13:41:08.967000+00:00</updated>
-    <author><name>yuuuuuuu</name></author>
-    <category term="amazon-eks"/><category term="aws-cloudshell"/>
-    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 88/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;In-depth analysis of EKS one-click cluster access with 18 code blocks and 3 terminal sessions.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 95/100&lt;/li&gt;&lt;li&gt;code substance: 80/100&lt;/li&gt;&lt;li&gt;source integrity: 90/100&lt;/li&gt;&lt;li&gt;depth: 80/100&lt;/li&gt;&lt;li&gt;originality: 60/100&lt;/li&gt;&lt;/ul&gt;</summary>
+    <id>https://builder.aws.com/content/3BXGlwEdGxtaCCqgnjUSxhRxLdc/how-i-built-a-serverless-cfp-agent-on-aws</id>
+    <title type="html">How I Built a Serverless CFP Agent on AWS</title>
+    <link rel="alternate" href="https://builder.aws.com/content/3BXGlwEdGxtaCCqgnjUSxhRxLdc/how-i-built-a-serverless-cfp-agent-on-aws"/>
+    <updated>2026-07-27T18:50:46.764000+00:00</updated>
+    <author><name>aaronshunter</name></author>
+    <category term="kiro"/><category term="aws-lambda"/><category term="amazon-dynamodb"/><category term="amazon-eventbridge"/>
+    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 88/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Detailed tutorial on building a serverless CFP agent with AWS services.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;substance: 85/100&lt;/li&gt;&lt;li&gt;explanation depth: 85/100&lt;/li&gt;&lt;li&gt;insight: 85/100&lt;/li&gt;&lt;li&gt;accuracy: 85/100&lt;/li&gt;&lt;li&gt;scope discipline: 85/100&lt;/li&gt;&lt;li&gt;aws service depth: 85/100&lt;/li&gt;&lt;li&gt;architecture quality: 85/100&lt;/li&gt;&lt;li&gt;well architected: 85/100&lt;/li&gt;&lt;li&gt;currency: 85/100&lt;/li&gt;&lt;li&gt;cost awareness: 80/100&lt;/li&gt;&lt;li&gt;evidence: 70/100&lt;/li&gt;&lt;li&gt;sources: 50/100&lt;/li&gt;&lt;li&gt;code quality: 85/100&lt;/li&gt;&lt;li&gt;clarity: 90/100&lt;/li&gt;&lt;li&gt;actionability: 85/100&lt;/li&gt;&lt;/ul&gt;</summary>
   </entry>
   <entry>
-    <id>https://builder.aws.com/content/3GwwVXZ0VS7mdvCn06mruysli4W/dont-break-agents-during-bedrock-model-upgrades</id>
-    <title type="html">Don't Break Agents During Bedrock Model Upgrades</title>
-    <link rel="alternate" href="https://builder.aws.com/content/3GwwVXZ0VS7mdvCn06mruysli4W/dont-break-agents-during-bedrock-model-upgrades"/>
-    <updated>2026-07-24T12:45:55.287000+00:00</updated>
-    <author><name>alexkro</name></author>
-    <category term="generative-ai"/><category term="ai-agents"/><category term="amazon-bedrock-agentcore"/><category term="devops"/><category term="machine-learning"/>
-    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 80/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Detailed Bedrock model upgrade tutorial with cost optimization strategies.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 45/100&lt;/li&gt;&lt;li&gt;code substance: 90/100&lt;/li&gt;&lt;li&gt;source integrity: 95/100&lt;/li&gt;&lt;li&gt;depth: 80/100&lt;/li&gt;&lt;li&gt;originality: 70/100&lt;/li&gt;&lt;/ul&gt;</summary>
+    <id>https://builder.aws.com/content/3H5ul9bqyFlDC7piOf0mYfAvG8r/no-anonymous-api-no-problem-inside-a-pooled-identity-architecture-for-embedding-quick-sight-chat-agents</id>
+    <title type="html">No Anonymous API? No Problem: Inside a Pooled-Identity Architecture for Embedding QuickSight Chat Agents</title>
+    <link rel="alternate" href="https://builder.aws.com/content/3H5ul9bqyFlDC7piOf0mYfAvG8r/no-anonymous-api-no-problem-inside-a-pooled-identity-architecture-for-embedding-quick-sight-chat-agents"/>
+    <updated>2026-07-27T17:36:43.467000+00:00</updated>
+    <author><name>abhibhtt</name></author>
+    <category term="amazon-quick-suite"/><category term="agents"/>
+    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 85/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Detailed explainer on pooled-identity architecture for QuickSight chat agents.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;substance: 90/100&lt;/li&gt;&lt;li&gt;explanation depth: 90/100&lt;/li&gt;&lt;li&gt;insight: 85/100&lt;/li&gt;&lt;li&gt;accuracy: 90/100&lt;/li&gt;&lt;li&gt;scope discipline: 90/100&lt;/li&gt;&lt;li&gt;aws service depth: 50/100&lt;/li&gt;&lt;li&gt;architecture quality: 85/100&lt;/li&gt;&lt;li&gt;well architected: 85/100&lt;/li&gt;&lt;li&gt;currency: 90/100&lt;/li&gt;&lt;li&gt;cost awareness: 60/100&lt;/li&gt;&lt;li&gt;evidence: 85/100&lt;/li&gt;&lt;li&gt;sources: 50/100&lt;/li&gt;&lt;li&gt;code quality: 70/100&lt;/li&gt;&lt;li&gt;clarity: 85/100&lt;/li&gt;&lt;li&gt;actionability: 85/100&lt;/li&gt;&lt;/ul&gt;</summary>
   </entry>
   <entry>
-    <id>https://builder.aws.com/content/3Gx8K4wJTlWOpkVLC8O4ikzR506/sinch-from-the-command-line-numbers-calls-messages-logs</id>
-    <title type="html">Sinch from the Command Line: Numbers, Calls, Messages, Logs</title>
-    <link rel="alternate" href="https://builder.aws.com/content/3Gx8K4wJTlWOpkVLC8O4ikzR506/sinch-from-the-command-line-numbers-calls-messages-logs"/>
-    <updated>2026-07-24T14:05:13.951000+00:00</updated>
-    <author><name>gunnargrosch</name></author>
-    <category term="javascript"/><category term="cli"/><category term="web-development"/><category term="terminal"/>
-    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 77/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;32 code blocks with high placeholder density, no runnable scripts.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 85/100&lt;/li&gt;&lt;li&gt;code substance: 70/100&lt;/li&gt;&lt;li&gt;source integrity: 30/100&lt;/li&gt;&lt;li&gt;depth: 80/100&lt;/li&gt;&lt;li&gt;originality: 80/100&lt;/li&gt;&lt;/ul&gt;</summary>
+    <id>https://builder.aws.com/content/3H5y4CpyrRP6zgSxfslXPY42A1f/library-of-people-pets-you-care-about</id>
+    <title type="html">Library of People &amp; Pets You Care About</title>
+    <link rel="alternate" href="https://builder.aws.com/content/3H5y4CpyrRP6zgSxfslXPY42A1f/library-of-people-pets-you-care-about"/>
+    <updated>2026-07-27T18:27:04.783000+00:00</updated>
+    <author><name>bryanchasko</name></author>
+    <category term="amazon-rekognition"/><category term="amazon-s3-vectors"/><category term="amazon-s3"/><category term="amazon-dynamodb"/><category term="ai-assisted-workflows"/>
+    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 82/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Dense, technical account of a personal project using multiple AWS services.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;substance: 90/100&lt;/li&gt;&lt;li&gt;explanation depth: 90/100&lt;/li&gt;&lt;li&gt;insight: 85/100&lt;/li&gt;&lt;li&gt;accuracy: 90/100&lt;/li&gt;&lt;li&gt;scope discipline: 90/100&lt;/li&gt;&lt;li&gt;aws service depth: 85/100&lt;/li&gt;&lt;li&gt;architecture quality: 70/100&lt;/li&gt;&lt;li&gt;well architected: 85/100&lt;/li&gt;&lt;li&gt;currency: 85/100&lt;/li&gt;&lt;li&gt;cost awareness: 60/100&lt;/li&gt;&lt;li&gt;evidence: 50/100&lt;/li&gt;&lt;li&gt;sources: 30/100&lt;/li&gt;&lt;li&gt;code quality: 50/100&lt;/li&gt;&lt;li&gt;clarity: 85/100&lt;/li&gt;&lt;li&gt;actionability: 70/100&lt;/li&gt;&lt;/ul&gt;</summary>
   </entry>
   <entry>
-    <id>https://builder.aws.com/content/3GsaeETf9JrYZ02eGil5tamaYu6/your-driver-defaults-are-fine-until-theyre-not</id>
-    <title type="html">Your Driver Defaults Are Fine. Until They're Not.</title>
-    <link rel="alternate" href="https://builder.aws.com/content/3GsaeETf9JrYZ02eGil5tamaYu6/your-driver-defaults-are-fine-until-theyre-not"/>
-    <updated>2026-07-23T00:00:01.667000+00:00</updated>
-    <author><name>allcoaws</name></author>
-    <category term="amazon-documentdb"/><category term="python"/><category term="nosql"/><category term="developer"/><category term="developer-tools"/>
-    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 75/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Deep Amazon DocumentDB insights with a custom Python wrapper, no execution evidence.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 45/100&lt;/li&gt;&lt;li&gt;code substance: 80/100&lt;/li&gt;&lt;li&gt;source integrity: 75/100&lt;/li&gt;&lt;li&gt;depth: 85/100&lt;/li&gt;&lt;li&gt;originality: 80/100&lt;/li&gt;&lt;/ul&gt;</summary>
+    <id>https://builder.aws.com/content/3F5Cg29oOjAcA4j3cOc3nQnIGTO/es-defensa-contra-las-artes-oscuras-de-los-data-pipelines-aprendiendo-sobre-resiliencia-en-almacenamiento</id>
+    <title type="html">[ES] Defensa Contra las Artes Oscuras de los data pipelines #3: aprendiendo sobre resiliencia en almacenamiento</title>
+    <link rel="alternate" href="https://builder.aws.com/content/3F5Cg29oOjAcA4j3cOc3nQnIGTO/es-defensa-contra-las-artes-oscuras-de-los-data-pipelines-aprendiendo-sobre-resiliencia-en-almacenamiento"/>
+    <updated>2026-07-27T18:01:29.667000+00:00</updated>
+    <author><name>ferchicata49</name></author>
+    <category term="resilience"/><category term="data-storage"/><category term="spanish"/><category term="data-engineering"/><category term="data"/>
+    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 79/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Comprehensive guide on building resilient data pipelines with AWS services.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;substance: 85/100&lt;/li&gt;&lt;li&gt;explanation depth: 85/100&lt;/li&gt;&lt;li&gt;insight: 70/100&lt;/li&gt;&lt;li&gt;accuracy: 85/100&lt;/li&gt;&lt;li&gt;scope discipline: 85/100&lt;/li&gt;&lt;li&gt;aws service depth: 50/100&lt;/li&gt;&lt;li&gt;architecture quality: 70/100&lt;/li&gt;&lt;li&gt;well architected: 85/100&lt;/li&gt;&lt;li&gt;currency: 85/100&lt;/li&gt;&lt;li&gt;cost awareness: 50/100&lt;/li&gt;&lt;li&gt;evidence: 85/100&lt;/li&gt;&lt;li&gt;sources: 90/100&lt;/li&gt;&lt;li&gt;code quality: 50/100&lt;/li&gt;&lt;li&gt;clarity: 85/100&lt;/li&gt;&lt;li&gt;actionability: 85/100&lt;/li&gt;&lt;/ul&gt;</summary>
   </entry>
   <entry>
-    <id>https://builder.aws.com/content/3H06NppXZCbehR2rw40HM7yKTV9/part-the-architecture-building-gad-p-on-aws</id>
-    <title type="html">Part 2: The Architecture — Building GAD-P on AWS</title>
-    <link rel="alternate" href="https://builder.aws.com/content/3H06NppXZCbehR2rw40HM7yKTV9/part-the-architecture-building-gad-p-on-aws"/>
-    <updated>2026-07-25T15:24:45.555000+00:00</updated>
-    <author><name>faris4aws</name></author>
-    <category term="amazon-bedrock"/><category term="agentic-ai"/><category term="amazon-athena"/><category term="aws-lake-formation"/><category term="ai-security"/>
-    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 75/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Detailed AWS architecture with runnable Python file, no execution evidence.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 45/100&lt;/li&gt;&lt;li&gt;code substance: 80/100&lt;/li&gt;&lt;li&gt;source integrity: 95/100&lt;/li&gt;&lt;li&gt;depth: 70/100&lt;/li&gt;&lt;li&gt;originality: 60/100&lt;/li&gt;&lt;/ul&gt;</summary>
+    <id>https://builder.aws.com/content/3GmRe87jkx3NhuN7t43nx1jW5se/agents-as-tools-en-strands-orquestacin-jerrquica-en-local-con-gemma-y-ollama</id>
+    <title type="html">Agents as Tools en Strands: orquestación jerárquica en local con Gemma 4 y Ollama</title>
+    <link rel="alternate" href="https://builder.aws.com/content/3GmRe87jkx3NhuN7t43nx1jW5se/agents-as-tools-en-strands-orquestacin-jerrquica-en-local-con-gemma-y-ollama"/>
+    <updated>2026-07-27T14:21:20.067000+00:00</updated>
+    <author><name>reinalau</name></author>
+    <category term="strands-agents"/><category term="open-source"/><category term="ai-agents"/><category term="strands"/><category term="artificial-intelligence"/>
+    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 77/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Detailed guide on implementing Agents as Tools pattern with Strands Agents and Ollama.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;substance: 85/100&lt;/li&gt;&lt;li&gt;explanation depth: 80/100&lt;/li&gt;&lt;li&gt;insight: 75/100&lt;/li&gt;&lt;li&gt;accuracy: 90/100&lt;/li&gt;&lt;li&gt;scope discipline: 85/100&lt;/li&gt;&lt;li&gt;aws service depth: 30/100&lt;/li&gt;&lt;li&gt;architecture quality: 70/100&lt;/li&gt;&lt;li&gt;well architected: 70/100&lt;/li&gt;&lt;li&gt;currency: 85/100&lt;/li&gt;&lt;li&gt;cost awareness: 80/100&lt;/li&gt;&lt;li&gt;evidence: 70/100&lt;/li&gt;&lt;li&gt;sources: 70/100&lt;/li&gt;&lt;li&gt;code quality: 85/100&lt;/li&gt;&lt;li&gt;clarity: 85/100&lt;/li&gt;&lt;li&gt;actionability: 85/100&lt;/li&gt;&lt;/ul&gt;</summary>
   </entry>
   <entry>
-    <id>https://builder.aws.com/content/3GvGFpW4zMzdjtOYwfUGpSDJnT4/secure-your-ai-agents-on-aws-part-inputs-identity-and-human-oversight</id>
-    <title type="html">Secure Your AI Agents on AWS (Part 1): Inputs, Identity, and Human Oversight</title>
-    <link rel="alternate" href="https://builder.aws.com/content/3GvGFpW4zMzdjtOYwfUGpSDJnT4/secure-your-ai-agents-on-aws-part-inputs-identity-and-human-oversight"/>
-    <updated>2026-07-23T22:33:17.262000+00:00</updated>
-    <author><name>waz</name></author>
-    <category term="amazon-bedrock-agentcore"/><category term="guardrails"/><category term="security"/><category term="generative-ai"/>
-    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 75/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Substantial code and framework for securing AI agents on AWS, lacking execution evidence.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 35/100&lt;/li&gt;&lt;li&gt;code substance: 80/100&lt;/li&gt;&lt;li&gt;source integrity: 90/100&lt;/li&gt;&lt;li&gt;depth: 80/100&lt;/li&gt;&lt;li&gt;originality: 85/100&lt;/li&gt;&lt;/ul&gt;</summary>
-  </entry>
-  <entry>
-    <id>https://builder.aws.com/content/3GrR0fBFQporiiuJJvH6jVV8Cly/per-tenant-dynamo-db-isolation-with-the-token-vending-machine-pattern</id>
-    <title type="html">Per-tenant DynamoDB isolation with the Token Vending Machine pattern</title>
-    <link rel="alternate" href="https://builder.aws.com/content/3GrR0fBFQporiiuJJvH6jVV8Cly/per-tenant-dynamo-db-isolation-with-the-token-vending-machine-pattern"/>
-    <updated>2026-07-22T13:41:02.352000+00:00</updated>
-    <author><name>monica</name></author>
-    <category term="amazon-dynamodb"/><category term="aws-lambda"/><category term="security-best-practices"/><category term="security-identity"/>
-    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 74/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Detailed TVM pattern explanation with code fragments, no execution evidence.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 35/100&lt;/li&gt;&lt;li&gt;code substance: 70/100&lt;/li&gt;&lt;li&gt;source integrity: 85/100&lt;/li&gt;&lt;li&gt;depth: 85/100&lt;/li&gt;&lt;li&gt;originality: 80/100&lt;/li&gt;&lt;/ul&gt;</summary>
-  </entry>
-  <entry>
-    <id>https://builder.aws.com/content/2xzcluRtMRvpLber0rD204y93D6/making-your-existing-mcp-server-run-on-agent-core-without-touching-its-code</id>
-    <title type="html">Making Your Existing MCP Server Run on AgentCore Without Touching Its Code</title>
-    <link rel="alternate" href="https://builder.aws.com/content/2xzcluRtMRvpLber0rD204y93D6/making-your-existing-mcp-server-run-on-agent-core-without-touching-its-code"/>
-    <updated>2026-07-26T15:13:00.581000+00:00</updated>
-    <author><name>eryan</name></author>
-    <category term="agentic-ai"/><category term="amazon-bedrock-agentcore"/>
-    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 72/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Detailed AgentCore integration tutorial for MCP servers, no execution proof.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 25/100&lt;/li&gt;&lt;li&gt;code substance: 85/100&lt;/li&gt;&lt;li&gt;source integrity: 95/100&lt;/li&gt;&lt;li&gt;depth: 70/100&lt;/li&gt;&lt;li&gt;originality: 80/100&lt;/li&gt;&lt;/ul&gt;</summary>
-  </entry>
-  <entry>
-    <id>https://builder.aws.com/content/3GzysDOqmtVqAoVSz7q1KI6GhUC/serverless-lazy-generation-generate-once-cache-forever-with-cloud-front-origin-groups-s-and-lambda</id>
-    <title type="html">Serverless Lazy Generation: generate once, cache forever with CloudFront origin groups (+ S3 and Lambda)</title>
-    <link rel="alternate" href="https://builder.aws.com/content/3GzysDOqmtVqAoVSz7q1KI6GhUC/serverless-lazy-generation-generate-once-cache-forever-with-cloud-front-origin-groups-s-and-lambda"/>
-    <updated>2026-07-25T14:18:59.669000+00:00</updated>
-    <author><name>psantusterracloud</name></author>
-    <category term="amazon-cloudfront"/><category term="serverless"/><category term="amazon-s3"/><category term="aws-lambda"/>
-    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 71/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Unique lazy generation pattern with CloudFront, S3, Lambda; no execution evidence.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 45/100&lt;/li&gt;&lt;li&gt;code substance: 80/100&lt;/li&gt;&lt;li&gt;source integrity: 90/100&lt;/li&gt;&lt;li&gt;depth: 70/100&lt;/li&gt;&lt;li&gt;originality: 60/100&lt;/li&gt;&lt;/ul&gt;</summary>
-  </entry>
-  <entry>
-    <id>https://builder.aws.com/content/3Gq47fNsQNddzh6zBVXYFVbNonl/user-identity-propagation-in-agentic-workflows-amazon-quick-agent-core-gateway-obo-token-exchange</id>
-    <title type="html">User identity Propagation in Agentic Workflows: Amazon Quick + AgentCore Gateway + OBO Token Exchange</title>
-    <link rel="alternate" href="https://builder.aws.com/content/3Gq47fNsQNddzh6zBVXYFVbNonl/user-identity-propagation-in-agentic-workflows-amazon-quick-agent-core-gateway-obo-token-exchange"/>
-    <updated>2026-07-22T02:47:49.816000+00:00</updated>
-    <author><name>mramakrv</name></author>
-    <category term="amazon-bedrock-agentcore"/><category term="agentic-ai"/><category term="ai-security"/><category term="mcp"/><category term="oauth"/>
-    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 71/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Substantial code for Amazon Bedrock AgentCore identity management, no execution evidence.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 25/100&lt;/li&gt;&lt;li&gt;code substance: 80/100&lt;/li&gt;&lt;li&gt;source integrity: 90/100&lt;/li&gt;&lt;li&gt;depth: 80/100&lt;/li&gt;&lt;li&gt;originality: 75/100&lt;/li&gt;&lt;/ul&gt;</summary>
-  </entry>
-  <entry>
-    <id>https://builder.aws.com/content/3Gm9On5fdYoVnRUCDQ3JtXNwRsy/nginx-ou-load-balancer-da-aws-o-que-aprendi-entregando-sistemas-em-software-house</id>
-    <title type="html">Nginx ou Load Balancer da AWS? O que aprendi entregando 15+ sistemas em Software House</title>
-    <link rel="alternate" href="https://builder.aws.com/content/3Gm9On5fdYoVnRUCDQ3JtXNwRsy/nginx-ou-load-balancer-da-aws-o-que-aprendi-entregando-sistemas-em-software-house"/>
-    <updated>2026-07-20T17:04:04.998000+00:00</updated>
-    <author><name>kirschzao</name></author>
-    <category term="load-balancing"/><category term="nginx"/><category term="application-load-balancer"/><category term="amazon-ecs"/><category term="aws-fargate"/>
-    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 71/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Detailed cost and performance benchmarks between Nginx and AWS Load Balancer.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 45/100&lt;/li&gt;&lt;li&gt;code substance: 80/100&lt;/li&gt;&lt;li&gt;source integrity: 85/100&lt;/li&gt;&lt;li&gt;depth: 80/100&lt;/li&gt;&lt;li&gt;originality: 85/100&lt;/li&gt;&lt;/ul&gt;</summary>
-  </entry>
-  <entry>
-    <id>https://builder.aws.com/content/3GXOyuLMZR7WLCptN5kxOEt0KpE/meet-cloudagotchi-building-a-virtual-pet-with-a-cloud-brain-part</id>
-    <title type="html">Meet Cloudagotchi: Building a virtual pet with a cloud brain (Part 1)</title>
-    <link rel="alternate" href="https://builder.aws.com/content/3GXOyuLMZR7WLCptN5kxOEt0KpE/meet-cloudagotchi-building-a-virtual-pet-with-a-cloud-brain-part"/>
-    <updated>2026-07-21T09:40:02.164000+00:00</updated>
-    <author><name>oleplus</name></author>
-    <category term="gen-ai"/><category term="iot"/><category term="serverless"/><category term="amazon-polly"/><category term="amazon-bedrock"/>
-    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 70/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Original IoT tutorial with AWS Polly and Bedrock insights, no runnable code.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;execution evidence: 45/100&lt;/li&gt;&lt;li&gt;code substance: 60/100&lt;/li&gt;&lt;li&gt;source integrity: 85/100&lt;/li&gt;&lt;li&gt;depth: 70/100&lt;/li&gt;&lt;li&gt;originality: 80/100&lt;/li&gt;&lt;/ul&gt;</summary>
+    <id>https://builder.aws.com/content/3H5nIGna88rDXsj9TONQUm3VNdh/encoding-kubernetes-runbooks-as-aws-dev-ops-agent-skills-faster-eks-incident-resolution</id>
+    <title type="html">Encoding Kubernetes Runbooks as AWS DevOps Agent Skills: Faster EKS Incident Resolution</title>
+    <link rel="alternate" href="https://builder.aws.com/content/3H5nIGna88rDXsj9TONQUm3VNdh/encoding-kubernetes-runbooks-as-aws-dev-ops-agent-skills-faster-eks-incident-resolution"/>
+    <updated>2026-07-27T16:33:23.441000+00:00</updated>
+    <author><name>manilogn</name></author>
+    <category term="devops"/><category term="amazon-eks"/><category term="kubernetes"/><category term="sre"/><category term="ai-agents"/>
+    <summary type="html">&lt;p&gt;&lt;strong&gt;RQS 77/100 &amp;mdash; READ&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Valuable tutorial on deploying Kubernetes skills with AWS DevOps Agent, despite referencing non-existent APIs.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;substance: 90/100&lt;/li&gt;&lt;li&gt;explanation depth: 85/100&lt;/li&gt;&lt;li&gt;insight: 80/100&lt;/li&gt;&lt;li&gt;accuracy: 35/100&lt;/li&gt;&lt;li&gt;scope discipline: 90/100&lt;/li&gt;&lt;li&gt;aws service depth: 85/100&lt;/li&gt;&lt;li&gt;architecture quality: 85/100&lt;/li&gt;&lt;li&gt;well architected: 85/100&lt;/li&gt;&lt;li&gt;currency: 40/100&lt;/li&gt;&lt;li&gt;cost awareness: 60/100&lt;/li&gt;&lt;li&gt;evidence: 50/100&lt;/li&gt;&lt;li&gt;sources: 50/100&lt;/li&gt;&lt;li&gt;code quality: 29/100&lt;/li&gt;&lt;li&gt;clarity: 85/100&lt;/li&gt;&lt;li&gt;actionability: 85/100&lt;/li&gt;&lt;/ul&gt;</summary>
   </entry>
 </feed>

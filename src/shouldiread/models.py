@@ -59,6 +59,7 @@ class Article:
     locale: str = "en"
     author: Author = field(default_factory=Author)
     external_canonical_url: str | None = None
+    hero_image_url: str | None = None
     likes: int = 0
     comments: int = 0
     created_at: str | None = None
@@ -90,6 +91,7 @@ class Article:
             locale=d.get("locale", "en") or "en",
             author=Author.from_api(d.get("author") or {}),
             external_canonical_url=d.get("externalCanonicalUrl") or None,
+            hero_image_url=d.get("heroImageUrl") or None,
             likes=int(d.get("likesCount") or 0),
             comments=int(d.get("commentsCount") or 0),
             created_at=_ms_to_iso(d.get("createdAt")),

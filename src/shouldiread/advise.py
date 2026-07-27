@@ -24,11 +24,21 @@ GOOD_ENOUGH = 75.0
 
 # Human-readable names for the machinery.
 DIMENSION_LABELS = {
-    "execution_evidence": "evidence you actually ran it",
-    "code_substance": "code substance",
-    "source_integrity": "sources and citations",
-    "depth": "depth beyond the docs",
-    "originality": "originality",
+    "substance": "substance — how much is actually here",
+    "explanation_depth": "explanation — mechanism or surface",
+    "insight": "insight — beyond the docs",
+    "accuracy": "accuracy",
+    "scope_discipline": "scope — delivers what it promises",
+    "aws_service_depth": "AWS depth — operating or naming",
+    "architecture_quality": "architecture — sound and reasoned",
+    "well_architected": "the hard parts — security, reliability, ops",
+    "currency": "currency — current with the service today",
+    "cost_awareness": "cost awareness",
+    "evidence": "evidence — proportionate to the claims",
+    "sources": "sources and citations",
+    "code_quality": "code quality",
+    "clarity": "clarity — can a reader follow it",
+    "actionability": "actionability — can a reader use it",
 }
 
 
@@ -70,109 +80,108 @@ def _points(dimension: str, delta: float) -> float:
 # --------------------------------------------------------------------------
 CAP_ADVICE: list[tuple[str, str, str, str]] = [
     (
-        "no code blocks",
-        "code_substance",
-        "Add the code you actually ran",
-        "This reads as a how-to but contains no code blocks, so the code score is "
-        "capped at 20. Paste the actual commands, template or script - even a "
-        "short complete one beats a described one.",
+        "too short to carry much",
+        "substance",
+        "There is not enough here yet",
+        "Under 250 words caps substance at 40. Not a style note - there is simply "
+        "not room to establish a problem, show a solution and say what you learned.",
     ),
     (
-        # The relaxed cap: code is not required here, so this is an opportunity
-        # rather than a defect and the wording should not scold.
-        "not the kind of article that needs it",
-        "code_substance",
-        "Optional: a small worked example would still help",
-        "This is an opinion or news piece, so no code is expected and the score "
-        "is not penalised for its absence - the code dimension is simply held at "
-        "55. If there is a natural place for one concrete snippet or a "
-        "configuration fragment, it would lift this without changing the piece.",
+        "too short to explain a mechanism",
+        "explanation_depth",
+        "There is not room to explain anything yet",
+        "Under 250 words caps explanation depth at 45. Explaining why something "
+        "behaves the way it does takes more space than describing that it does.",
+    ),
+    (
+        "references AWS APIs that do not exist",
+        "currency",
+        "Check the API names against the current SDK",
+        "An operation that is not in any AWS SDK is either invented or long "
+        "removed. Either way a reader following it will fail.",
+    ),
+    (
+        "cites AWS operations that do not exist",
+        "accuracy",
+        "Correct the operations that do not exist",
+        "Accuracy is capped at 35 while the article references AWS operations "
+        "that are not in any SDK - the clearest possible signal that a claim was "
+        "never checked.",
+    ),
+    (
+        "code is largely placeholders",
+        "code_quality",
+        "Replace placeholders with runnable values",
+        "Code that is mostly YOUR_BUCKET and <region> caps code quality at 55. "
+        "Show real (redacted) values so a reader can run it and then adapt it, "
+        "rather than adapt it before they can run it.",
+    ),
+    (
+        "long-form with no code, no numbers and no specifics",
+        "substance",
+        "Long, but thin on specifics",
+        "A long piece with no code, no measurements and no concrete detail caps "
+        "substance at 55. Length is not the problem; the absence of anything "
+        "specific enough to be checked is.",
+    ),
+    (
+        "no AWS service referenced at all",
+        "aws_depth",
+        "Connect it to AWS",
+        "Builder Center readers come for AWS. Nothing here references a service, so "
+        "this is capped at 10. If AWS is part of the work, name what you used and "
+        "show a little of how.",
+    ),
+    (
+        "services named, but nothing configured",
+        "aws_depth",
+        "Show the service being operated, not just named",
+        "Services are mentioned but nothing is configured, invoked or measured, "
+        "capping AWS depth at 49. One parameter that mattered, a quota you hit or a "
+        "cost figure moves this more than another paragraph of description.",
+    ),
+    (
+        "do not exist in any SDK",
+        "credibility",
+        "Correct the AWS APIs that do not exist",
+        "One or more APIs referenced are not in any AWS SDK, which caps credibility "
+        "at 29. This is the one hard disqualifier: an operation that does not exist "
+        "means the content was never checked against reality.",
     ),
     (
         "most code blocks do not parse",
-        "code_substance",
+        "credibility",
         "Fix the code that does not parse",
-        "Some blocks fail a syntax check, which caps the code score at 40. Run each "
-        "snippet through the interpreter before pasting it; a reader who copies "
-        "broken code will not come back.",
+        "Blocks failing a syntax check cap credibility at 55. Run each snippet "
+        "through the interpreter before pasting it.",
     ),
     (
-        "largely placeholders",
-        "code_substance",
-        "Replace placeholders with runnable values",
-        "The code is mostly YOUR_BUCKET / <region> style placeholders, which caps "
-        "the code score at 50. Show real (redacted) values so the snippet can be "
-        "run and then adapted, rather than adapted before it can be run.",
-    ),
-    (
-        "do not exist",
-        "code_substance",
-        "Correct the AWS API names that do not exist",
-        "One or more APIs referenced are not in any AWS SDK. This caps both code "
-        "and sources at 25, because a nonexistent operation means the code was "
-        "never executed. Check each against botocore or the CLI reference.",
-    ),
-    (
-        "no outbound sources at all",
-        "source_integrity",
-        "Cite your sources",
-        "There are no outbound links, which caps the source score at 30. Link the "
-        "AWS documentation pages, specs or repositories behind your non-obvious "
-        "claims - quotas, limits, pricing and behaviour especially.",
-    ),
-    (
-        "no primary sources",
-        "source_integrity",
-        "Link primary sources, not just commentary",
-        "The links present go to blogs and community posts rather than AWS docs, "
-        "specs or repositories, which caps the source score at 55. Point at the "
-        "authoritative page for anything factual.",
-    ),
-    (
-        "most links are dead",
-        "source_integrity",
+        "most outbound links are dead",
+        "credibility",
         "Fix the dead links",
-        "A large share of outbound links do not resolve, capping sources at 40. "
-        "Re-check them; AWS documentation URLs move more often than most.",
+        "A large share of outbound links do not resolve, capping credibility at 50.",
     ),
     (
-        "no terminal output",
-        "execution_evidence",
-        "Paste what actually happened when you ran it",
-        "There is no console output, screenshot or measurement anywhere, which "
-        "caps execution evidence at 25 - the heaviest dimension in the score. "
-        "Paste the real command output, including anything that went wrong.",
+        "no outbound sources in a piece making factual claims",
+        "credibility",
+        "Cite sources for the factual claims",
+        "A tutorial, deep dive, reference or news piece asserting facts with no "
+        "outbound links is capped at 60. Opinion and experience pieces are exempt - "
+        "this applies because of what the article claims to be.",
     ),
     (
-        "numbers quoted but no output",
-        "execution_evidence",
-        "Show the run, not just the results",
-        "You quote figures but never show them being produced, capping execution "
-        "evidence at 45. A pasted session or a screenshot of your own console is "
-        "the difference between reporting a result and demonstrating one.",
-    ),
-    (
-        "near-duplicate",
-        "originality",
-        "This closely matches another author's article",
-        "The body is a near-duplicate of a different author's published piece, "
-        "capping originality at 10. If it is a legitimate reuse, set a canonical "
-        "URL; if it is coincidental overlap, rewrite in your own framing.",
-    ),
-    (
-        "bold-text pseudo-headings",
-        "originality",
-        "Use real markdown headings",
-        "Sections are marked with bold text rather than ## headings, which caps "
-        "originality at 55 - it is one of the most consistent markers of generated "
-        "structure. Convert them; it also fixes your table of contents.",
-    ),
-    (
-        "too short to develop",
-        "depth",
+        "too short to develop anything",
+        "insight",
         "Develop the idea further",
-        "Under 300 words caps depth at 35. There is not room to establish a "
-        "problem, show a solution and explain a tradeoff in that space.",
+        "Under 300 words caps insight at 40 - not enough room to establish a point "
+        "and support it.",
+    ),
+    (
+        "pseudo-headings instead of real structure",
+        "clarity",
+        "Use real markdown headings",
+        "Sections marked with bold text rather than ## headings cap clarity at 65. "
+        "Converting them also fixes navigation and the table of contents.",
     ),
 ]
 
@@ -213,38 +222,90 @@ def _headroom_recommendations(score: dict[str, Any]) -> list[Recommendation]:
     out: list[Recommendation] = []
 
     hints = {
-        "execution_evidence": (
-            "Add an artefact only a real run produces",
-            "Console output, a stack trace you hit and fixed, a timing, a bill, a "
-            "screenshot of your own resources. This dimension carries the most "
-            "weight of any in the score.",
+        "substance": (
+            "Cut the padding, add specifics",
+            "Replace the generic passages with concrete detail only you can supply - "
+            "a parameter, a number, a constraint you hit.",
         ),
-        "code_substance": (
-            "Make the code complete enough to run",
-            "Include imports, versions and enough context that a reader can copy "
-            "the block and get somewhere without reconstructing the rest.",
+        "explanation_depth": (
+            "Explain the mechanism, not just the behaviour",
+            "Say why it works the way it does, not only what it does. That is the "
+            "difference between a description and an explanation.",
         ),
-        "source_integrity": (
-            "Anchor the factual claims",
-            "Quotas, limits, pricing and behavioural claims read as assertions "
-            "unless they point at the documentation that establishes them.",
-        ),
-        "depth": (
+        "insight": (
             "Say something the documentation does not",
-            "A gotcha that is not written down, a tradeoff with your reasoning, a "
-            "failure mode and its cause. Restating what a service does is the "
-            "single most common reason an article scores mid-range.",
+            "A gotcha that is not written down, a tradeoff with your reasoning, why "
+            "the obvious approach fails.",
         ),
-        "originality": (
-            "Make it unmistakably yours",
-            "Your specific problem, your constraints, your decision. Content that "
-            "would read the same with the service name swapped scores low here.",
+        "accuracy": (
+            "Tighten the claims that are loose",
+            "Check the statements a knowledgeable reader would query, and qualify "
+            "anything you are not certain of rather than stating it flat.",
+        ),
+        "scope_discipline": (
+            "Deliver what the title promises",
+            "Either narrow the title to what the article actually covers, or cover "
+            "what the title claims. A deep-dive title on a quickstart costs trust.",
+        ),
+        "aws_service_depth": (
+            "Operate the services, do not just name them",
+            "One parameter that mattered, a quota you hit, an IAM condition or a "
+            "cost figure is worth more than another paragraph describing a service.",
+        ),
+        "architecture_quality": (
+            "Show the reasoning behind the design",
+            "A diagram is not architecture. Say what you considered and rejected, "
+            "and what constraint drove the shape of it.",
+        ),
+        "well_architected": (
+            "Acknowledge what would bite in production",
+            "Security, failure modes, scaling limits, operations. Not a checklist - "
+            "just the parts a reader would hit that the happy path hides.",
+        ),
+        "currency": (
+            "Check it against the service as it is today",
+            "Patterns and APIs move. Anything superseded by a recent launch will "
+            "mislead a reader who finds this in six months.",
+        ),
+        "cost_awareness": (
+            "Say what this costs to run",
+            "A real figure, or the pricing dimension that shapes the design. Readers "
+            "have to pay for what they build from your article.",
+        ),
+        "evidence": (
+            "Support the claims you are making",
+            "Not every article needs terminal output - but every claim needs "
+            "something behind it. Show the measurement for results, and say plainly "
+            "what you did not test.",
+        ),
+        "sources": (
+            "Cite the factual claims",
+            "Quotas, limits, prices and behaviours read as assertions unless they "
+            "point at the documentation that establishes them.",
+        ),
+        "code_quality": (
+            "Make the code complete enough to run",
+            "Include imports, versions and enough context that a reader can copy the "
+            "block and get somewhere without reconstructing the rest.",
+        ),
+        "clarity": (
+            "Make it easier to follow",
+            "State the problem before the solution, use real headings, and give code "
+            "enough surrounding context that a reader knows where it goes.",
+        ),
+        "actionability": (
+            "Give the reader something to do",
+            "End with the concrete next step - what to run, what to change, or what "
+            "decision to make differently.",
         ),
     }
 
     for dimension, weight in sorted(WEIGHTS.items(), key=lambda kv: -kv[1]):
         current = capped.get(dimension, {}).get("score")
         if current is None or dimension in already or current >= GOOD_ENOUGH:
+            continue
+        if dimension not in hints:
+            # A pillar added without a hint should degrade, not crash.
             continue
         title, detail = hints[dimension]
         rationale = capped.get(dimension, {}).get("rationale", "")

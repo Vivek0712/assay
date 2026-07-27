@@ -42,12 +42,43 @@ MODEL_JUDGE = "us.amazon.nova-pro-v1:0"  # deep judge, only past the gate
 # --- Scoring ------------------------------------------------------------------
 # Weights sum to 100. Execution evidence dominates on purpose: the whole premise
 # is that the expensive-to-fake signal is having actually run the thing.
+# Fifteen dimensions, grouped into four families. The question every one of them
+# serves is the reader's - "is this worth my time?" - not "prove you ran it".
+#
+# Fifteen scored dimensions, but only FOUR judge calls: each judge returns its
+# whole family in one structured response. Granularity for the author-facing
+# advice, without paying for it in tokens.
+DIMENSION_FAMILIES: dict[str, list[str]] = {
+    "content": ["substance", "explanation_depth", "insight", "accuracy", "scope_discipline"],
+    "aws": ["aws_service_depth", "architecture_quality", "well_architected",
+            "currency", "cost_awareness"],
+    "evidence": ["evidence", "sources", "code_quality"],
+    "reader": ["clarity", "actionability"],
+}
+
 WEIGHTS = {
-    "execution_evidence": 30,
-    "code_substance": 25,
-    "source_integrity": 20,
-    "depth": 15,
-    "originality": 10,
+    # --- content: is there anything here? (35) ---
+    "substance": 9,            # real technical content vs padding
+    "explanation_depth": 7,    # mechanism, or surface description
+    "insight": 10,             # what you could not get from the docs
+    "accuracy": 6,             # is it correct
+    "scope_discipline": 3,     # does it deliver what the title promises
+
+    # --- AWS: is it useful to an AWS builder? (28) ---
+    "aws_service_depth": 10,   # operating a service vs naming it
+    "architecture_quality": 7, # is the design sound and reasoned
+    "well_architected": 5,     # security, reliability, performance, ops
+    "currency": 3,             # current with the service as it is today
+    "cost_awareness": 3,       # does it engage with what this costs
+
+    # --- evidence: can it be trusted? (22) ---
+    "evidence": 9,             # verifiable artefacts, proportionate to claims
+    "sources": 6,              # citations for factual claims
+    "code_quality": 7,         # if code is present, is it usable and correct
+
+    # --- reader: can it be used? (15) ---
+    "clarity": 8,              # can a reader follow it
+    "actionability": 7,        # can a reader do something with it
 }
 
 READ_THRESHOLD = 70

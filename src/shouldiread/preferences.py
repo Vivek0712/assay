@@ -28,7 +28,7 @@ class Preferences:
     author_kinds: list[str] = field(default_factory=list)
     """Empty means every kind of author."""
 
-    max_age_days: int = 7
+    max_age_days: int = 3
     include_cross_posts: bool = True
     locales: list[str] = field(default_factory=list)
     """Empty means every language."""

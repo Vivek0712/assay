@@ -35,18 +35,10 @@ def render_review_page(*, api_base: str = DEFAULT_API) -> str:
 <meta name="description" content="Paste an AWS Builder Center article and get ranked, quantified recommendations for improving its Read-Quality Score.">
 <style>
 :root {{
-  color-scheme: light dark;
-  --bg:#fbfbfa; --fg:#16150f; --muted:#6b6a63; --line:#e3e2dc; --card:#fff;
-  --read:#1a7f5a; --skim:#9a6b00; --skip:#a33b30; --accent:#16150f;
+  color-scheme: light;
+  --bg:#f4f5f7; --fg:#161d26; --muted:#5d6874; --line:#dde1e7; --card:#fff;
+  --read:#0f7a55; --skim:#8a6100; --skip:#b23a2f; --accent:#161d26;
 }}
-@media (prefers-color-scheme: dark) {{
-  :root {{ --bg:#14140f; --fg:#ecebe4; --muted:#96958c; --line:#2c2b24; --card:#1c1b16;
-           --read:#5fd1a4; --skim:#e3b34d; --skip:#f2887a; --accent:#ecebe4; }}
-}}
-:root[data-theme=dark] {{ --bg:#14140f; --fg:#ecebe4; --muted:#96958c; --line:#2c2b24; --card:#1c1b16;
-  --read:#5fd1a4; --skim:#e3b34d; --skip:#f2887a; --accent:#ecebe4; }}
-:root[data-theme=light] {{ --bg:#fbfbfa; --fg:#16150f; --muted:#6b6a63; --line:#e3e2dc; --card:#fff;
-  --read:#1a7f5a; --skim:#9a6b00; --skip:#a33b30; --accent:#16150f; }}
 * {{ box-sizing:border-box; }}
 body {{ margin:0; background:var(--bg); color:var(--fg);
   font:16px/1.6 ui-sans-serif,-apple-system,"Segoe UI",Inter,system-ui,sans-serif; }}
@@ -139,7 +131,7 @@ public leaderboard.</p>
   <p>Likes, views and comments are deliberately excluded &mdash; measured across a week of Builder
   Center they showed no correlation with quality (r&nbsp;=&nbsp;&minus;0.08, n&nbsp;=&nbsp;307).</p>
   <p>Also available as <code>assay review &lt;url&gt;</code> and as an MCP tool.
-  &middot; <a href="/">the reading leaderboard</a> &middot; {generated}</p>
+  &middot; <a href="/">back to the leaderboard</a> &middot; {generated}</p>
 </footer>
 </div>
 

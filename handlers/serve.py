@@ -51,7 +51,7 @@ def _prefs_from_query(q: dict[str, str]) -> Preferences:
         exclude_topics=_csv(q.get("exclude")),
         min_rqs=float(q.get("min_rqs", 70)),
         author_kinds=_csv(q.get("author_kinds")),
-        max_age_days=int(q.get("max_age_days", 7)),
+        max_age_days=int(q.get("max_age_days", 3)),
         limit=int(q.get("limit", 25)),
     )
 

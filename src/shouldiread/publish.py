@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Any
 from xml.sax.saxutils import escape as xml_escape
 
-from .config import ROOT, SITE
+from .config import DIMENSION_FAMILIES, ROOT, SITE, WEIGHTS
 from .corpus import load_scores
 from .preferences import Preferences
 
@@ -88,6 +88,11 @@ def render_page(scores: list[dict[str, Any]], *, generated: str | None = None) -
     stats = _stats(scores)
     generated = generated or datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     payload = json.dumps([_public(s) for s in scores], ensure_ascii=False)
+    families = json.dumps(
+        {f: [{'name': d, 'weight': WEIGHTS[d]} for d in dims]
+         for f, dims in DIMENSION_FAMILIES.items()},
+        ensure_ascii=False,
+    )
 
     return f"""<!doctype html>
 <html lang="en">
@@ -99,18 +104,10 @@ def render_page(scores: list[dict[str, Any]], *, generated: str | None = None) -
 <meta name="description" content="Assay reads AWS Builder Center and scores every article on measurable evidence rather than likes.">
 <style>
 :root {{
-  color-scheme: light dark;
-  --bg:#fbfbfa; --fg:#16150f; --muted:#6b6a63; --line:#e3e2dc; --card:#fff;
-  --read:#1a7f5a; --skim:#9a6b00; --skip:#a33b30; --accent:#16150f;
+  color-scheme: light;
+  --bg:#f4f5f7; --fg:#161d26; --muted:#5d6874; --line:#dde1e7; --card:#fff;
+  --read:#0f7a55; --skim:#8a6100; --skip:#b23a2f; --accent:#161d26;
 }}
-@media (prefers-color-scheme: dark) {{
-  :root {{ --bg:#14140f; --fg:#ecebe4; --muted:#96958c; --line:#2c2b24; --card:#1c1b16;
-           --read:#5fd1a4; --skim:#e3b34d; --skip:#f2887a; --accent:#ecebe4; }}
-}}
-:root[data-theme=dark] {{ --bg:#14140f; --fg:#ecebe4; --muted:#96958c; --line:#2c2b24; --card:#1c1b16;
-  --read:#5fd1a4; --skim:#e3b34d; --skip:#f2887a; --accent:#ecebe4; }}
-:root[data-theme=light] {{ --bg:#fbfbfa; --fg:#16150f; --muted:#6b6a63; --line:#e3e2dc; --card:#fff;
-  --read:#1a7f5a; --skim:#9a6b00; --skip:#a33b30; --accent:#16150f; }}
 * {{ box-sizing:border-box; }}
 body {{ margin:0; background:var(--bg); color:var(--fg);
   font:16px/1.55 ui-sans-serif,-apple-system,"Segoe UI",Inter,system-ui,sans-serif; }}
@@ -121,6 +118,12 @@ header {{ padding:40px 0 28px; border-bottom:1px solid var(--line); }}
 .brand img {{ display:block; }}
 h1 {{ font-size:clamp(28px,5vw,42px); margin:0 0 10px; letter-spacing:-.022em; }}
 .sub {{ color:var(--muted); max-width:60ch; margin:0; }}
+.cta {{ display:flex; flex-wrap:wrap; align-items:center; gap:12px 16px; margin:22px 0 0; }}
+.cta span {{ color:var(--muted); font-size:13.5px; }}
+.btn {{ display:inline-block; font-size:14px; font-weight:600; padding:10px 18px;
+  border-radius:10px; text-decoration:none; border:1px solid var(--accent);
+  background:var(--accent); color:var(--bg); }}
+.btn:hover {{ opacity:.9; }}
 .stats {{ display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
   margin:28px 0 0; }}
 .stat {{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px 16px; }}
@@ -151,7 +154,15 @@ li.row {{ border-bottom:1px solid var(--line); padding:18px 0; display:grid;
 details {{ margin-top:10px; }}
 summary {{ cursor:pointer; color:var(--muted); font-size:12.5px; }}
 .dims {{ margin-top:10px; display:grid; gap:7px; }}
-.dim {{ display:grid; grid-template-columns:150px 90px 1fr; gap:10px; align-items:center; font-size:12.5px; }}
+.dims {{ display:grid; gap:16px; }}
+.fam h4 {{ margin:0 0 7px; font-size:11.5px; text-transform:uppercase; letter-spacing:.09em;
+  color:var(--muted); font-weight:600; display:flex; gap:8px; align-items:baseline; }}
+.fam h4 span {{ font-weight:400; letter-spacing:0; text-transform:none; opacity:.75; }}
+.famnote {{ margin:7px 0 0; font-size:12.5px; color:var(--muted); }}
+.dim {{ display:grid; grid-template-columns:190px 1fr 34px; gap:10px; align-items:center;
+  font-size:12.5px; padding:1.5px 0; }}
+.dimname em {{ font-style:normal; opacity:.5; font-size:11px; }}
+.dimscore {{ text-align:right; font-variant-numeric:tabular-nums; }}
 .bar {{ height:5px; background:var(--line); border-radius:3px; overflow:hidden; }}
 .bar i {{ display:block; height:100%; background:currentColor; }}
 .dimname {{ color:var(--muted); }}
@@ -173,6 +184,9 @@ code {{ background:var(--card); border:1px solid var(--line); border-radius:4px;
   <strong>Read-Quality Score</strong> built from what can be measured &mdash; pasted terminal output,
   code that actually parses, AWS APIs that actually exist, sources that actually resolve.
   Likes and views are deliberately ignored; they are the easiest thing on the page to buy.</p>
+  <p class="cta"><a class="btn" href="/review.html">Review my article &rarr;</a>
+  <span>Paste your own link and get ranked fixes, each priced in RQS points.</span></p>
+
   <div class="stats">
     <div class="stat"><b>{stats['total']}</b><span>articles scored</span></div>
     <div class="stat"><b>{stats['read']}</b><span>worth reading ({stats['read_pct']}%)</span></div>
@@ -218,10 +232,38 @@ let verdict = 'ALL';
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
   ({{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}}[c]));
 
-function dimRow(d) {{
-  return `<div class="dim"><span class="dimname">${{esc(d.name.replace(/_/g,' '))}}</span>
+const FAMILIES = {families};
+const FAMILY_LABEL = {{content:'Content', aws:'AWS', evidence:'Evidence', reader:'Reader'}};
+
+function dimRow(byName, spec) {{
+  const d = byName[spec.name];
+  if (!d) return '';
+  return `<div class="dim"><span class="dimname">${{esc(spec.name.replace(/_/g,' '))}}
+      <em>&times;${{spec.weight}}</em></span>
     <span class="bar"><i style="width:${{Math.max(0, Math.min(100, d.score))}}%"></i></span>
-    <span>${{d.score.toFixed(0)}} &mdash; ${{esc(d.rationale)}}</span></div>`;
+    <span class="dimscore">${{d.score.toFixed(0)}}</span></div>`;
+}}
+
+function breakdown(s) {{
+  const byName = Object.fromEntries((s.dimensions||[]).map(d => [d.name, d]));
+  if (!Object.keys(byName).length) return '';
+  const seen = new Set();
+  const groups = Object.entries(FAMILIES).map(([fam, specs]) => {{
+    const rows = specs.map(sp => dimRow(byName, sp)).join('');
+    if (!rows) return '';
+    specs.forEach(sp => seen.add(sp.name));
+    const weight = specs.reduce((a, sp) => a + sp.weight, 0);
+    const note = (byName[specs[0].name]||{{}}).rationale || '';
+    return `<div class="fam"><h4>${{esc(FAMILY_LABEL[fam]||fam)}}
+        <span>weight ${{weight}}</span></h4>${{rows}}
+        ${{note ? `<p class="famnote">${{esc(note)}}</p>` : ''}}</div>`;
+  }}).join('');
+  const bonus = (s.signals && s.signals.author_bonus) || 0;
+  const extra = bonus
+    ? `<p class="famnote">author credibility +${{bonus}} on top of ${{s.signals.base_rqs}}
+       earned by the article</p>` : '';
+  return `<details><summary>score breakdown &mdash; 15 dimensions</summary>
+    <div class="dims">${{groups}}${{extra}}</div></details>`;
 }}
 
 function render() {{
@@ -239,16 +281,7 @@ function render() {{
       : (s.url ? `<a href="${{esc(s.url)}}" rel="noopener">${{esc(s.title)}}</a>` : esc(s.title));
     const who = s.redacted ? '' : `<span>@${{esc(s.author_alias)}}</span>`;
     const tags = (s.tags||[]).slice(0,5).map(t => `<span class="tag">${{esc(t)}}</span>`).join('');
-    const bonus = (s.signals && s.signals.author_bonus) || 0;
-    const bonusRow = bonus
-      ? `<div class="dim"><span class="dimname">author credibility</span>
-           <span></span><span>+${{bonus}} on top of ${{s.signals.base_rqs}} earned by the article
-           (${{esc(s.author_kind||'').replace(/_/g,' ')}})</span></div>`
-      : '';
-    const dims = (s.dimensions||[]).length
-      ? `<details><summary>score breakdown</summary><div class="dims">
-           ${{s.dimensions.map(dimRow).join('')}}${{bonusRow}}</div></details>`
-      : '';
+    const dims = breakdown(s);
     return `<li class="row ${{s.verdict}}">
       <div><div class="score">${{s.rqs.toFixed(0)}}</div><div class="badge">${{s.verdict}}</div></div>
       <div>

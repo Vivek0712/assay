@@ -47,15 +47,27 @@ judges may interpret but never contradict:
 | `cross_post_check` | MinHash near-duplicate detection across the corpus, including the same body under a *different* author |
 | `engagement_ratio` | wired one way only: engagement can never raise a score, it can only flag a thin post carrying implausible likes |
 
-Then a Strands multi-agent fleet on Bedrock AgentCore scores five dimensions:
+Then a Strands multi-agent fleet on Bedrock AgentCore scores **fifteen dimensions**,
+grouped into four families. The question every one of them serves is the reader's —
+*is this worth my time?* — not *can you prove you ran it*.
 
-| dimension | weight |
-|---|---|
-| evidence of actual execution | 30 |
-| code substance and validity | 25 |
-| source integrity | 20 |
-| depth beyond the documentation | 15 |
-| originality | 10 |
+| family | weight | dimensions |
+|---|---|---|
+| **Content** — is there anything here? | 35 | substance 9 · explanation depth 7 · insight 10 · accuracy 6 · scope discipline 3 |
+| **AWS** — useful to an AWS builder? | 28 | service depth 10 · architecture quality 7 · well-architected 5 · currency 3 · cost awareness 3 |
+| **Evidence** — can it be trusted? | 22 | evidence 9 · sources 6 · code quality 7 |
+| **Reader** — can it be used? | 15 | clarity 8 · actionability 7 |
+
+Fifteen dimensions, but only **four judge calls** — each judge returns its whole
+family in one structured response. Granularity for the author-facing advice
+without paying for it in tokens.
+
+An earlier version weighted proof-of-execution at 30 and scored a substantial
+project write-up as SKIM for linking a repository instead of pasting a terminal
+session. Execution proof is now one signal inside `evidence`, weighted to the
+strength of the claims made: an opinion piece needs none, a claimed 10x speedup
+needs the measurement. Judges are told to calibrate against what the article is
+*trying to be* — a news post, an explainer and a deep dive succeed differently.
 
 ### Author credibility
 

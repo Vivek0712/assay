@@ -27,17 +27,10 @@
 
 <!-- wordmark -->
 <g font-family="ui-sans-serif,-apple-system,'Segoe UI',Inter,system-ui,sans-serif">
-  <text x="146" y="78" font-size="60" font-weight="700" letter-spacing="-.035em" fill="#161D26"
-        class="wm">Assay</text>
-  <text x="150" y="102" font-size="14.5" letter-spacing=".05em" fill="#6B6A63" class="tag">
+  <text x="146" y="78" font-size="60" font-weight="700" letter-spacing="-.035em"
+        fill="#161D26">Assay</text>
+  <text x="150" y="102" font-size="14.5" letter-spacing=".05em" fill="#5D6874">
     MEASURED, NOT UPVOTED
   </text>
 </g>
-
-<style>
-  @media (prefers-color-scheme: dark) {
-    .wm  { fill: #F5F3EF; }
-    .tag { fill: #96958C; }
-  }
-</style>
 </svg>
