@@ -151,6 +151,7 @@ li.row {{ border-bottom:1px solid var(--line); padding:18px 0; display:grid;
 .head {{ margin:5px 0 8px; }}
 .meta {{ color:var(--muted); font-size:12.5px; display:flex; flex-wrap:wrap; gap:5px 12px; }}
 .tag {{ font-size:11px; border:1px solid var(--line); border-radius:5px; padding:1px 6px; }}
+.meta time {{ font-variant-numeric:tabular-nums; }}
 details {{ margin-top:10px; }}
 summary {{ cursor:pointer; color:var(--muted); font-size:12.5px; }}
 .dims {{ margin-top:10px; display:grid; gap:7px; }}
@@ -229,6 +230,19 @@ const count = document.getElementById('count');
 const q = document.getElementById('q');
 let verdict = 'ALL';
 
+function published(iso) {{
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (isNaN(d)) return '';
+  const days = Math.floor((Date.now() - d) / 86400000);
+  // Recency is the point of a reading queue, so lead with it while it matters.
+  const rel = days <= 0 ? 'today' : days === 1 ? 'yesterday'
+            : days < 7 ? `${{days}} days ago` : null;
+  const abs = d.toLocaleDateString(undefined,
+    {{ day: 'numeric', month: 'short', year: 'numeric' }});
+  return `<time datetime="${{iso}}" title="${{abs}}">${{rel || abs}}</time>`;
+}}
+
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
   ({{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}}[c]));
 
@@ -287,7 +301,7 @@ function render() {{
       <div>
         <div class="title">${{title}}</div>
         <div class="head">${{esc(s.headline)}}</div>
-        <div class="meta">${{who}}<span>${{esc(s.author_kind||'')}}</span>${{tags}}</div>
+        <div class="meta">${{published(s.published_at)}}${{who}}<span>${{esc(s.author_kind||'')}}</span>${{tags}}</div>
         ${{dims}}
       </div></li>`;
   }}).join('');
